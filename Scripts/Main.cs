@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Main : Node
+public class Main : Node2D
 {
     // Declare member variables here. Examples:
     // private int a = 2;
