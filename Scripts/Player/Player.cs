@@ -1,13 +1,13 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace MathRPG.Player
+namespace MathRPG
 {
     public class Player: KinematicBody2D
     {
-        const int speed = 40;
+        const int speed = 100;
         List<Vector2> path = new List<Vector2>();
-
+        
         public override void _PhysicsProcess(float delta)
         {
             // как только мы получаем не пустой путь, то начинаем движение
@@ -24,16 +24,14 @@ namespace MathRPG.Player
         // само движение по пути
         private void MoveAlongPath(float delta)
         {
-            // var distanse = speed * delta; // расстояние, на которое может двигать игрока на текущем кадре (скорость * время)
-            for (int i = 0; i < path.Count; i++)
-            {
-                var nextCell = path[i];
-                // var distanseToNextCell = Position.DistanceTo(nextCell);
-                
-                // distanse -= distanseToNextCell; // так как мы не знаем, сколько пройдем на текущем кадре, то смотрим на оставшееся расстояние
-                MoveAndSlide(Position.DirectionTo(nextCell).Normalized() * speed);
-            }
-            path.Clear();
-        }   
+            // передвижение 
+            var nextCell = path[0];
+            MoveAndSlide(Position.DirectionTo(nextCell).Normalized() * speed);
+            // просчет дистанции (прошли точку или нет, если да, то убираем ее из пути)
+            var distanse = speed * delta; // расстояние, на которое может двигать игрока на текущем кадре (скорость * время)
+            var distanseToNextCell = Position.DistanceTo(nextCell);
+            if (distanse > distanseToNextCell)
+                path.RemoveAt(0);
+        }
     }
 }

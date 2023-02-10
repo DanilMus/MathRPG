@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MathRPG_hero.png-c2aae8e39cc8ef83fdf54821cd3bec79.stex"
+path="res://.import/MathRPG_block.png-23ee44cd829a5759504755f6ebd45cc1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/MathRPG_hero.png"
-dest_files=[ "res://.import/MathRPG_hero.png-c2aae8e39cc8ef83fdf54821cd3bec79.stex" ]
+source_file="res://Sprites/MathRPG_block.png"
+dest_files=[ "res://.import/MathRPG_block.png-23ee44cd829a5759504755f6ebd45cc1.stex" ]
 
 [params]
 

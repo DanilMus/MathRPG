@@ -3,7 +3,7 @@ using Godot;
 using System.Collections.Generic;
 using Godot.Collections;
 
-namespace MathRPG.Player
+namespace MathRPG
 {
     public class PathFinder
     {
@@ -15,6 +15,7 @@ namespace MathRPG.Player
         public PathFinder(TileMap _groundTileMap)
         {
             groundTileMap = _groundTileMap;
+            InitAStar(groundTileMap);
         }
 
         // настройка графа
@@ -23,8 +24,14 @@ namespace MathRPG.Player
             astar = new AStar2D();
             // получаем массив с кооридинатами клеток
             List<Vector2> cells = FromGodotArrayToList(tileMap.GetUsedCells());
-            cells.Sort();
-            
+            // сортировка (да, да, знаю тяжелая, но она работает, это уже что-то)
+            cells.Sort((a, b) => {
+                if (a.x != b.x)
+                    return a.x.CompareTo(b.x);
+                else
+                    return a.y.CompareTo(b.y);
+            });
+            // для смещение центров ячеек
             var toTheCentreOfTheCell = tileMap.CellSize / 2;
 
             for (int i = 0; i < cells.Count; i++)
@@ -45,6 +52,7 @@ namespace MathRPG.Player
                 // |_|_|_|
                 // |_|_|_|
                 // |_|_|_|
+                // 
                 foreach (var neighbour in neighbours)
                 {
                     if (tileMap.GetCellv(neighbour) == TileMap.InvalidCell)
@@ -54,6 +62,18 @@ namespace MathRPG.Player
                 }
             }
         }
+
+
+        // метод получения пути
+        public List<Vector2> GetMovePath(Vector2 from, Vector2 to)
+        {
+            var path = astar.GetPointPath(
+                astar.GetClosestPoint(from),
+                astar.GetClosestPoint(to)
+            );
+            return FromVector2ArrayToList(path);
+        }
+
 
         // вспомогательная функция для перевода из списка годота в список с#
         // (разницы м/у этими списками почти нет, но у с# есть сортировка)
@@ -65,6 +85,23 @@ namespace MathRPG.Player
                 result.Add(vector2);
             }
             return result;
+        }
+
+        private List<Vector2> FromVector2ArrayToList(Vector2[] godotArray)
+        {
+            List<Vector2> result = new List<Vector2>();
+            foreach (Vector2 vector2 in godotArray)
+            {
+                result.Add(vector2);
+            }
+            return result;
+        }
+
+        // вспомогательная функция, чтобы выровнять что-то по сетке тайла
+        // например, чтобы персонаж находился по центру ячейки
+        public Vector2 GetClosestPosition(Vector2 to)
+        {
+            return astar.GetPointPosition(astar.GetClosestPoint(to));
         }
     }   
 }
