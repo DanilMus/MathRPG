@@ -13,8 +13,7 @@ namespace MathRPG
             pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
             player = GetNode<Player>("Player");
-            // прикрепление позиции игрока к сетке
-            player.Position = pathFinder.GetClosestPosition(player.Position);
+            player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
         }
 
         public override void _Input(InputEvent @event)
