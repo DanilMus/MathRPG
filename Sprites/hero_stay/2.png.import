@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/MathRPG_block(1).png-781fed0f766bc3f78fe90c9b22aa089a.stex"
+path="res://.import/2.png-ab61352a952bc952f8a4558350e8bde2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/MathRPG_block(1).png"
-dest_files=[ "res://.import/MathRPG_block(1).png-781fed0f766bc3f78fe90c9b22aa089a.stex" ]
+source_file="res://Sprites/hero_stay/2.png"
+dest_files=[ "res://.import/2.png-ab61352a952bc952f8a4558350e8bde2.stex" ]
 
 [params]
 

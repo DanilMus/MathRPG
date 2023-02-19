@@ -19,7 +19,7 @@ namespace MathRPG
             if (path.Count != 0) // как только мы получаем не пустой путь, то начинаем движение
                 MoveAlongPath(delta);
             else
-                animatedSprite.Stop();
+                animatedSprite.Play("stay");
         }
 
         // Отсюда мы сможем устанавливать путь
@@ -32,7 +32,7 @@ namespace MathRPG
         private void MoveAlongPath(float delta)
         {
             // Подруб анимации
-            animatedSprite.Play();
+            animatedSprite.Play("walk");
             animatedSprite.FlipH = Position.x - path[path.Count - 1].x > 2;
             // Передвижение 
             var nextCell = path[0];
