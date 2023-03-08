@@ -6,8 +6,10 @@ namespace MathRPG
     public class Player: KinematicBody2D
     {
         const int speed = 100;
-        List<Vector2> path = new List<Vector2>();
+        List<Vector2> path = new List<Vector2>() {};
         AnimatedSprite animatedSprite;
+        [Signal]
+        public delegate void MovementDone();
 
         public override void _Ready()
         {
@@ -42,6 +44,8 @@ namespace MathRPG
             var distanseToNextCell = Position.DistanceTo(nextCell);
             if (distanse > distanseToNextCell)
                 path.RemoveAt(0);
+            if (path.Count == 0)
+                EmitSignal(nameof(MovementDone));
         }
 
 

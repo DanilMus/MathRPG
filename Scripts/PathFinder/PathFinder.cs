@@ -73,7 +73,7 @@ namespace MathRPG
 
             var cellsWereAnalised = new Dictionary(); // Хранение проанализированных ячеек
             var cellsWillBeAnalised = new List<Vector2>() { // Ячейки для анализа
-                groundTileMap.MapToWorld(cell)
+                groundTileMap.WorldToMap(cell)
             }; 
 
             for (int i = 0; i < radius; i++) // Проходимся по радиусу
@@ -84,7 +84,7 @@ namespace MathRPG
                 {   
                     var cellToAnalise = cellsWillBeAnalised[j];
 
-                    if (groundTileMap.GetCellv(cellToAnalise) != TileMap.InvalidCell // Необходимая проверка, которая поможет избежать кучи ошибок
+                    if (groundTileMap.GetCellv(cellToAnalise) == TileMap.InvalidCell // Необходимая проверка, которая поможет избежать кучи ошибок
                         || cellsWereAnalised.Contains(cellToAnalise)) // И проверка на то, чтобы не делать работу по второму кругу
                         continue;
                     
