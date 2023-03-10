@@ -47,7 +47,5 @@ namespace MathRPG
             if (path.Count == 0)
                 EmitSignal(nameof(MovementDone));
         }
-
-
     }
 }
