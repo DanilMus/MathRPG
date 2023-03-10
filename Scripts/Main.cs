@@ -13,14 +13,14 @@ namespace MathRPG
         Node2D moveArea; // для хранения сцен pathCellScene
         
 
-        public override void _Ready()
+        public override void _Ready() // Первая инициализация сцены
         {
             pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
             player = GetNode<Player>("Player");
             player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
 
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4));
+            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4)); // Рисуем пути
         }
 
         public override void _Input(InputEvent @event)
@@ -29,15 +29,20 @@ namespace MathRPG
                 return;
             
             CleanMoveArea();
+            SetPath();
+        }
+
+        public void SetPath()
+        {
             var mousePosition = GetGlobalMousePosition();
-            var areaInRadius = pathFinder.GetAreaInRadius(player.Position , 3);
+            var areaInRadius = pathFinder.GetAreaInRadius(player.Position , 4);
             var nextCell = pathFinder.GetClosestPositionFromList(mousePosition, areaInRadius);
 
             var path = pathFinder.GetMovePath(player.Position, nextCell);
             player.SetPath(path);
         }
 
-        public void OnPlayerMovementDone()
+        public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4));
         }
