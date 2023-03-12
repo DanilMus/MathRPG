@@ -11,6 +11,7 @@ namespace MathRPG
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         Node2D moveArea; // для хранения сцен pathCellScene
+        AnimationPlayer cutscene; // для катсцены
         
 
         public override void _Ready() // Первая инициализация сцены
@@ -21,6 +22,9 @@ namespace MathRPG
             player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
 
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4)); // Рисуем пути
+        
+            cutscene = GetNode<AnimationPlayer>("Cutscene");
+            cutscene.Play("scene1");
         }
 
         public override void _Input(InputEvent @event)
