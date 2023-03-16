@@ -1,0 +1,44 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Sprites/friend/FirstFriend.tres" type="SpriteFrames" id=1]
+
+[sub_resource type="CSharpScript" id=3]
+resource_name = "FirstFriend"
+script/source = "using Godot;
+using System;
+
+public class FirstFriend : AnimatedSprite
+{
+    // Declare member variables here. Examples:
+    // private int a = 2;
+    // private string b = \"text\";
+
+    // Called when the node enters the scene tree for the first time.
+    public override void _Ready()
+    {
+        
+    }
+
+//  // Called every frame. 'delta' is the elapsed time since the previous frame.
+//  public override void _Process(float delta)
+//  {
+//      
+//  }
+}
+"
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 9.0
+height = 10.0
+
+[node name="FirstFriend" type="AnimatedSprite"]
+frames = ExtResource( 1 )
+animation = "stay"
+script = SubResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource( 2 )
+
+[connection signal="mouse_entered" from="Area2D" to="." method="OnArea2DMouseEntered"]

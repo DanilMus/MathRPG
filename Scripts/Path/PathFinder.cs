@@ -3,7 +3,7 @@ using Godot;
 using System.Collections.Generic;
 using Godot.Collections;
 
-namespace MathRPG
+namespace MathRPG.Path
 {
     public class PathFinder
     {

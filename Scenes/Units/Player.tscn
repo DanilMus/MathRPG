@@ -1,7 +1,7 @@
 [gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Sprites/hero/hero_walk/11.png" type="Texture" id=1]
-[ext_resource path="res://Scripts/Player/Player.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/Units/Player.cs" type="Script" id=2]
 [ext_resource path="res://Sprites/hero/hero_walk/10.png" type="Texture" id=3]
 [ext_resource path="res://Sprites/hero/hero_walk/4.png" type="Texture" id=4]
 [ext_resource path="res://Sprites/hero/hero_walk/8.png" type="Texture" id=5]

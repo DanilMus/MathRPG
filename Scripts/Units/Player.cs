@@ -1,7 +1,7 @@
 using Godot;
 using System.Collections.Generic;
 
-namespace MathRPG
+namespace MathRPG.Units
 {
     public class Player: KinematicBody2D
     {

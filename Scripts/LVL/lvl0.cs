@@ -1,12 +1,13 @@
 using Godot;
+using Godot.Collections;
 using System.Collections.Generic;
 
 using MathRPG.Path;
 using MathRPG.Units;
 
-namespace MathRPG
+namespace MathRPG.LVL
 {
-    public class Main : Node2D
+    public class lvl0 : Node2D
     {
         PathFinder pathFinder; // Класс нахождения пути
         Player player; // Игрок
@@ -14,6 +15,7 @@ namespace MathRPG
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         Node2D moveArea; // для хранения сцен pathCellScene
         AnimationPlayer cutscene; // для катсцены
+        AnimatedSprite friend;
         
 
         public override void _Ready() // Первая инициализация сцены
@@ -26,6 +28,11 @@ namespace MathRPG
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4)); // Рисуем пути
 
             cutscene = GetNode<AnimationPlayer>("Cutscenes");
+
+            friend = GetNode<AnimatedSprite>("FirstFriend");
+            friend.Position = pathFinder.GetClosestPosition(friend.Position);
+            friend.Connect("MouseEnteredCopy", this, nameof(PlayScene0));
+            // this.Connect("MouseEnteredCopy", friend, nameof(PlayScene));
         }
 
         public override void _Input(InputEvent @event)
@@ -35,6 +42,19 @@ namespace MathRPG
             
             CleanMoveArea();
             SetPath();
+        }
+
+        public void PlayScene0()
+        {
+            GD.Print("PlayScene0() called");
+            cutscene.Play("scene0");
+            friend.Connect("MouseEnteredCopy", this, nameof(PlayScene1));
+        }
+
+        public void PlayScene1()
+        {
+            GD.Print("PlayScene1() called");
+            cutscene.Play("scene1");
         }
         
 
