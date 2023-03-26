@@ -14,8 +14,10 @@ namespace MathRPG.LVL
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         Node2D moveArea; // для хранения сцен pathCellScene
-        AnimationPlayer cutscene; // для катсцены
-        AnimatedSprite friend;
+        AnimationPlayer cutscenes; // для катсцен
+        AnimatedSprite friend; // для друга
+        int cutsceneNum = 0; // номер текущей катсцены
+        string[] cutscenesNames; // хранение названий катсцен
         
 
         public override void _Ready() // Первая инициализация сцены
@@ -27,12 +29,12 @@ namespace MathRPG.LVL
 
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4)); // Рисуем пути
 
-            cutscene = GetNode<AnimationPlayer>("Cutscenes");
+            cutscenes = GetNode<AnimationPlayer>("Cutscenes");
+            cutscenesNames = cutscenes.GetAnimationList();
 
             friend = GetNode<AnimatedSprite>("FirstFriend");
             friend.Position = pathFinder.GetClosestPosition(friend.Position);
-            friend.Connect("MouseEnteredCopy", this, nameof(PlayScene0));
-            // this.Connect("MouseEnteredCopy", friend, nameof(PlayScene));
+            friend.Connect("MousePressed", this, nameof(PlayScene));
         }
 
         public override void _Input(InputEvent @event)
@@ -44,17 +46,10 @@ namespace MathRPG.LVL
             SetPath();
         }
 
-        public void PlayScene0()
+        public void PlayScene()
         {
-            GD.Print("PlayScene0() called");
-            cutscene.Play("scene0");
-            friend.Connect("MouseEnteredCopy", this, nameof(PlayScene1));
-        }
-
-        public void PlayScene1()
-        {
-            GD.Print("PlayScene1() called");
-            cutscene.Play("scene1");
+            if (cutsceneNum < cutscenesNames.Length && !cutscenes.IsPlaying())
+                cutscenes.Play(cutscenesNames[ cutsceneNum++ ]);
         }
         
 
