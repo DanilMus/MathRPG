@@ -10,7 +10,7 @@ using System;
 public class HealthBar : TextureProgress
 {	
   private int HPFake = 2;                     //Фейковое ХП(для демонстрации работы метода UpdateHealthBar)
-  private int HPFakeMax = 500;					//Фейковое максимальное ХП(для демонстрации работы метода UpdateHealthBar)
+  private int HPFakeMax = 500;                //Фейковое максимальное ХП(для демонстрации работы метода UpdateHealthBar)
   private bool isHPFakeIncreasing = true;     //Переменная, обеспечивающая переход текущего хп от 0 до максимального
 
 
@@ -35,24 +35,24 @@ public class HealthBar : TextureProgress
   
    public override void _Process(float delta)
    {
-    UpdateHealthBar(HPFake,HPFakeMax);     //Обновление полоски ХП в соответствии с фейк-значениями
-    
-    //Изменение фейк-значений таким образом, чтобы текущее хп изменялось плавно от 0 до максимума и наоборот
-         if(isHPFakeIncreasing)
-    {
-      HPFake+=1;
-      if(HPFake>=HPFakeMax)
+     UpdateHealthBar(HPFake,HPFakeMax);     //Обновление полоски ХП в соответствии с фейк-значениями
+     
+     //Изменение фейк-значений таким образом, чтобы текущее хп изменялось плавно от 0 до максимума и наоборот
+     if(isHPFakeIncreasing)
+     {
+        HPFake+=1;
+        if(HPFake>=HPFakeMax)
+        {
+          isHPFakeIncreasing=false;
+        }
+      }
+      else
       {
-        isHPFakeIncreasing=false;
+        HPFake-=1;
+        if(HPFake<=0)
+        {
+          isHPFakeIncreasing=true;
+        }
       }
     }
-    else
-    {
-      HPFake-=1;
-      if(HPFake<=0)
-      {
-        isHPFakeIncreasing=true;
-      }
-    }
-  }
 }

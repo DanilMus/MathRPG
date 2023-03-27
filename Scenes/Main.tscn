@@ -91,11 +91,11 @@ position = Vector2( 114, 178 )
 [node name="CanvasLayer" type="CanvasLayer" parent="Player"]
 
 [node name="HealthBar" parent="Player/CanvasLayer" instance=ExtResource( 8 )]
-margin_left = 8.0
-margin_top = 347.0
-margin_right = 513.0
-margin_bottom = 448.0
-rect_scale = Vector2( 0.415132, 0.403953 )
+margin_left = 12.0
+margin_top = 342.0
+margin_right = 517.0
+margin_bottom = 443.0
+rect_scale = Vector2( 1.66695, 1.90118 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )

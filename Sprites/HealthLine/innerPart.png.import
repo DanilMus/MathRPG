@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/HPBarInnerPart2.png-a0dcaa23f71edbe9eafc6f4050643b5a.stex"
+path="res://.import/innerPart.png-076f2356da93266217143cc91e963781.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/HealthLine/HPBarInnerPart2.png"
-dest_files=[ "res://.import/HPBarInnerPart2.png-a0dcaa23f71edbe9eafc6f4050643b5a.stex" ]
+source_file="res://Sprites/HealthLine/innerPart.png"
+dest_files=[ "res://.import/innerPart.png-076f2356da93266217143cc91e963781.stex" ]
 
 [params]
 

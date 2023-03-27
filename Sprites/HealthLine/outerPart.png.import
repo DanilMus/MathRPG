@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/photo_2023-02-22_22-48-22.jpg-533bd2cd980be73689b1e60ecc4989cb.stex"
+path="res://.import/outerPart.png-4ba9b6785fa040c08feed9e5f79a4014.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Sprites/HealthLine/photo_2023-02-22_22-48-22.jpg"
-dest_files=[ "res://.import/photo_2023-02-22_22-48-22.jpg-533bd2cd980be73689b1e60ecc4989cb.stex" ]
+source_file="res://Sprites/HealthLine/outerPart.png"
+dest_files=[ "res://.import/outerPart.png-4ba9b6785fa040c08feed9e5f79a4014.stex" ]
 
 [params]
 
