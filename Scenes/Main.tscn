@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scripts/Main.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://Sprites/cells/MathRPG_block (1).png" type="Texture" id=5]
 [ext_resource path="res://Sprites/cells/MathRPG_block (2).png" type="Texture" id=6]
 [ext_resource path="res://Scenes/PathCell.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/HPBar.tscn" type="PackedScene" id=8]
 
 [sub_resource type="TileSet" id=1]
 0/name = "MathRPG_cell.png 0"
@@ -87,11 +88,18 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 114, 178 )
 
+[node name="CanvasLayer" type="CanvasLayer" parent="Player"]
+
+[node name="HealthBar" parent="Player/CanvasLayer" instance=ExtResource( 8 )]
+margin_left = 8.0
+margin_top = 347.0
+margin_right = 513.0
+margin_bottom = 448.0
+rect_scale = Vector2( 0.415132, 0.403953 )
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )
 current = true
 smoothing_enabled = true
 
 [node name="CutScene" type="AnimationPlayer" parent="."]
-
-[connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
