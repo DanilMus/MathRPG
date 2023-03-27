@@ -1,15 +1,18 @@
+using System;
 using Godot;
 using System.Collections.Generic;
 
 using MathRPG.Path;
-using MathRPG.Units;
+using MathRPG.Entities.Heroes;
+using MathRPG.Entities.Enemies;
 
 namespace MathRPG
 {
     public class Main : Node2D
     {
-        PathFinder pathFinder; // Класс нахождения пути
-        Player player; // Игрок
+        private PathFinder pathFinder; // Класс нахождения пути
+        private Player player; // Игрок
+        
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         Node2D moveArea; // для хранения сцен pathCellScene
@@ -30,9 +33,9 @@ namespace MathRPG
 
         public override void _Input(InputEvent @event)
         {
-            if (!(@event is InputEventMouseButton) || !(@event.IsPressed()))
+            if (!(@event is InputEventMouseButton) || !@event.IsPressed())
                 return;
-            
+
             CleanMoveArea();
             SetPath();
         }
@@ -45,7 +48,7 @@ namespace MathRPG
             var nextCell = pathFinder.GetClosestPositionFromList(mousePosition, areaInRadius);
 
             var path = pathFinder.GetMovePath(player.Position, nextCell);
-            player.SetPath(path);
+            player.Path = path;
         }
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
@@ -56,16 +59,17 @@ namespace MathRPG
         void DrawMoveArea(List<Vector2> area)
         {
             moveArea = new Node2D();
+            
             for (int i = 1; i < area.Count; i++) // пропускаяем ячейку, где стоит персонаж
             {
                 Vector2 cell = area[i];
-                var pathCell = (PathCell)pathCellScene.Instance();
+                var pathCell = (PathCell) pathCellScene.Instance();
                 pathCell.Position = cell;
                 moveArea.AddChild(pathCell);
             }
+            
             AddChild(moveArea);
         }
-
         void CleanMoveArea()
         {
             if (moveArea != null)

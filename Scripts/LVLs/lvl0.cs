@@ -3,7 +3,8 @@ using Godot.Collections;
 using System.Collections.Generic;
 
 using MathRPG.Path;
-using MathRPG.Units;
+using MathRPG.Entities.Heroes;
+using MathRPG.Entities.Enemies;
 
 namespace MathRPG.LVL
 {
@@ -60,7 +61,7 @@ namespace MathRPG.LVL
             var nextCell = pathFinder.GetClosestPositionFromList(mousePosition, areaInRadius);
 
             var path = pathFinder.GetMovePath(player.Position, nextCell);
-            player.SetPath(path);
+            player.Path = path;
         }
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение

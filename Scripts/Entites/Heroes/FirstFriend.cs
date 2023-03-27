@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-namespace MathRPG.Units
+namespace MathRPG.Entities.Heroes
 {
     public class FirstFriend : AnimatedSprite
     {
