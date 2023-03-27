@@ -8,14 +8,5 @@ namespace MathRPG.Scripts.Player
         {
             InitializeVariables();
         }
-
-        protected override void Move(float delta)
-        {
-            // Включаем анимацию
-            AnimatedSprite.Play("walk");
-            AnimatedSprite.FlipH = Position.x - Path[Path.Count - 1].x > 2;
-
-            base.Move(delta);
-        }
     }
 }

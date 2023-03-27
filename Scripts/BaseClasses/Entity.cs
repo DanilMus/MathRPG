@@ -9,6 +9,11 @@ namespace MathRPG.Scripts.BaseClasses
         private int _speed;
         private List<Vector2> _path;
         private AnimatedSprite _animatedSprite;
+        private int _health;
+        private int _walkRadius;
+
+        [Signal]
+        public delegate void MovementDone();
 
         public List<Vector2> Path
         {
@@ -20,7 +25,6 @@ namespace MathRPG.Scripts.BaseClasses
                 _path = value;
             }
         }
-
         protected AnimatedSprite AnimatedSprite
         {
             get => _animatedSprite;
@@ -31,7 +35,6 @@ namespace MathRPG.Scripts.BaseClasses
                 _animatedSprite = value;
             }
         }
-
         protected int Speed
         {
             get => _speed;
@@ -42,11 +45,27 @@ namespace MathRPG.Scripts.BaseClasses
                 _speed = value;
             }
         }
-        
-        [Signal]
-        public delegate void MovementDone();
+        public int Health
+        {
+            get => _health;
+            set 
+            {
+                if (value < 0) throw new ArgumentException("Health value should be more than zero");
 
-        public abstract override void _Ready();
+                _health = value; 
+            }
+        }
+        protected int WalkRadius
+        {
+            get => _walkRadius;
+            set
+            {
+                if (value < 0) throw new ArgumentException("WalkRadius value should be more than zero");
+
+                _walkRadius = value; 
+            } 
+        }
+
 
         public override void _PhysicsProcess(float delta)
         {
@@ -59,12 +78,17 @@ namespace MathRPG.Scripts.BaseClasses
         protected virtual void InitializeVariables()
         {
             Speed = 100;
+            WalkRadius = 3;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             Path = new List<Vector2>();
         }
 
         protected virtual void Move(float delta)
         {
+            // Включаем анимацию
+            AnimatedSprite.Play("walk");
+            AnimatedSprite.FlipH = Position.x - Path[Path.Count - 1].x > 2;
+
             // Передвижение 
             var nextCell = Path[0];
             MoveAndSlide(Position.DirectionTo(nextCell).Normalized() * Speed);
@@ -75,7 +99,6 @@ namespace MathRPG.Scripts.BaseClasses
             
             if (distance > distanceToNextCell)
                 Path.RemoveAt(0);
-            
             if (Path.Count == 0)
                 EmitSignal(nameof(MovementDone));
         }

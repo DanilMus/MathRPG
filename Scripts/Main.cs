@@ -63,7 +63,6 @@ namespace MathRPG
             
             AddChild(moveArea);
         }
-
         private void CleanMoveArea()
         {
             if (moveArea != null)
