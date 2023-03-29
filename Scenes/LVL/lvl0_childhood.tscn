@@ -165,7 +165,7 @@ tracks/1/keys = {
 "values": [ true, true, false ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Entities/Player/Camera2D:current")
+tracks/2/path = NodePath("Player/Camera2D:current")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -189,7 +189,7 @@ tracks/3/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.2, 0.2 ), Vector2( 0.7, 0.7 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Entities/Player:position")
+tracks/4/path = NodePath("Player:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
@@ -213,7 +213,7 @@ tracks/5/keys = {
 "values": [ "hello", "stay" ]
 }
 tracks/6/type = "value"
-tracks/6/path = NodePath("Entities/Player/Camera2D:zoom")
+tracks/6/path = NodePath("Player/Camera2D:zoom")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/imported = false
@@ -225,7 +225,7 @@ tracks/6/keys = {
 "values": [ Vector2( 1, 1 ), Vector2( 0.7, 0.67 ) ]
 }
 tracks/7/type = "value"
-tracks/7/path = NodePath("Entities/Player/Camera2D:smoothing_enabled")
+tracks/7/path = NodePath("Player/Camera2D:smoothing_enabled")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/imported = false
@@ -253,6 +253,16 @@ cell_size = Vector2( 32, 32 )
 format = 1
 tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 6, 0, 0, 7, 0, 0, 8, 0, 0, 9, 0, 0, 10, 0, 0, 11, 0, 0, 12, 0, 0, 13, 0, 0, 14, 0, 0, 65536, 0, 0, 65550, 0, 0, 131072, 0, 0, 131077, 2, 0, 131078, 2, 0, 131082, 2, 0, 131086, 0, 0, 196608, 0, 0, 196610, 2, 0, 196611, 2, 0, 196615, 2, 0, 196616, 2, 0, 196618, 2, 0, 196619, 2, 0, 196620, 2, 0, 196622, 0, 0, 262144, 0, 0, 262146, 2, 0, 262151, 2, 0, 262158, 0, 0, 327680, 0, 0, 327682, 2, 0, 327687, 2, 0, 327689, 2, 0, 327694, 0, 0, 393216, 0, 0, 393218, 2, 0, 393223, 2, 0, 393225, 2, 0, 393226, 2, 0, 393230, 0, 0, 458752, 0, 0, 458762, 2, 0, 458766, 0, 0, 524288, 0, 0, 524290, 2, 0, 524298, 2, 0, 524299, 2, 0, 524302, 0, 0, 589824, 0, 0, 589828, 2, 0, 589829, 2, 0, 589830, 2, 0, 589831, 2, 0, 589835, 2, 0, 589838, 0, 0, 655360, 0, 0, 655363, 2, 0, 655364, 2, 0, 655367, 2, 0, 655370, 2, 0, 655371, 2, 0, 655374, 0, 0, 720896, 0, 0, 720899, 2, 0, 720906, 2, 0, 720908, 2, 0, 720910, 0, 0, 786432, 0, 0, 786436, 2, 0, 786438, 2, 0, 786439, 2, 0, 786440, 2, 0, 786442, 2, 0, 786446, 0, 0, 851968, 0, 0, 851982, 0, 0, 917504, 0, 0, 917505, 0, 0, 917506, 0, 0, 917507, 0, 0, 917508, 0, 0, 917509, 0, 0, 917510, 0, 0, 917511, 0, 0, 917512, 0, 0, 917513, 0, 0, 917514, 0, 0, 917515, 0, 0, 917516, 0, 0, 917517, 0, 0, 917518, 0, 0 )
 
+[node name="Player" parent="." instance=ExtResource( 2 )]
+position = Vector2( 112, 209 )
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+offset = Vector2( 0, 16 )
+current = true
+limit_smoothed = true
+smoothing_enabled = true
+smoothing_speed = 1.0
+
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="FirstFriend" parent="Entities" instance=ExtResource( 8 )]
@@ -260,16 +270,6 @@ position = Vector2( 208, 176 )
 
 [node name="Camera2D" type="Camera2D" parent="Entities/FirstFriend"]
 offset = Vector2( 0, 16 )
-
-[node name="Player" parent="Entities" instance=ExtResource( 2 )]
-position = Vector2( 112, 209 )
-
-[node name="Camera2D" type="Camera2D" parent="Entities/Player"]
-offset = Vector2( 0, 16 )
-current = true
-limit_smoothed = true
-smoothing_enabled = true
-smoothing_speed = 1.0
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
 anims/scene1 = SubResource( 3 )

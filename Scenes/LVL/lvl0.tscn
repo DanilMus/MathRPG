@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Scripts/LVLs/lvl0.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Heroes/Player.tscn" type="PackedScene" id=2]
@@ -70,171 +70,20 @@
 2/z_index = 0
 
 [sub_resource type="Animation" id=3]
-resource_name = "scene1"
-length = 3.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Entities/FirstFriend:animation")
+resource_name = "Scene1"
+tracks/0/type = "method"
+tracks/0/path = NodePath("Entities/FirstFriend")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ "stay", "stay", "hello" ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Entities/FirstFriend:flip_h")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ false, true ]
-}
-
-[sub_resource type="Animation" id=4]
-resource_name = "scene2"
-length = 5.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Entities/FirstFriend:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.2, 4, 5 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 208, 176 ), Vector2( 208, 176 ), Vector2( 464, 176 ), Vector2( 464, 240 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Entities/FirstFriend:animation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.2, 5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ "hello", "walk", "stay" ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Entities/FirstFriend:flip_h")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0 ),
+"times": PoolRealArray( 0.2 ),
 "transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ false ]
-}
-
-[sub_resource type="Animation" id=6]
-resource_name = "scene3"
-length = 10.0
-tracks/0/type = "value"
-tracks/0/path = NodePath("Entities/FirstFriend:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 3, 3.01 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 464, 240 ), Vector2( 464, 240 ), Vector2( -144, 816 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("Entities/FirstFriend/Camera2D:current")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0.1, 3, 3.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ true, true, false ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("Player/Camera2D:current")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.1, 3.5 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ true, false, true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Entities/FirstFriend/Camera2D:zoom")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0.2, 3, 3.4 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.2, 0.2 ), Vector2( 0.7, 0.7 ) ]
-}
-tracks/4/type = "value"
-tracks/4/path = NodePath("Player:position")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/keys = {
-"times": PoolRealArray( 3, 3.01 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 112, 209 ), Vector2( -144, 752 ) ]
-}
-tracks/5/type = "value"
-tracks/5/path = NodePath("Entities/FirstFriend:animation")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ "hello", "stay" ]
-}
-tracks/6/type = "value"
-tracks/6/path = NodePath("Player/Camera2D:zoom")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/keys = {
-"times": PoolRealArray( 0, 3.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 0,
-"values": [ Vector2( 1, 1 ), Vector2( 0.7, 0.67 ) ]
-}
-tracks/7/type = "value"
-tracks/7/path = NodePath("Player/Camera2D:smoothing_enabled")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/keys = {
-"times": PoolRealArray( 3, 3.5 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
+"values": [ {
+"args": [ Vector2( 112, 211 ) ],
+"method": "SayHello"
+} ]
 }
 
 [node name="lvl0" type="Node2D"]
@@ -261,18 +110,18 @@ offset = Vector2( 0, 16 )
 current = true
 limit_smoothed = true
 smoothing_enabled = true
+smoothing_speed = 10.0
 
 [node name="Entities" type="Node2D" parent="."]
 
 [node name="FirstFriend" parent="Entities" instance=ExtResource( 8 )]
-position = Vector2( 207, 208 )
+position = Vector2( 207, 209 )
 
 [node name="Camera2D" type="Camera2D" parent="Entities/FirstFriend"]
 offset = Vector2( 0, 16 )
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
-anims/scene1 = SubResource( 3 )
-anims/scene2 = SubResource( 4 )
-anims/scene3 = SubResource( 6 )
+anims/Scene1 = SubResource( 3 )
 
 [connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
+[connection signal="MousePressed" from="Entities/FirstFriend" to="." method="PlayScene"]

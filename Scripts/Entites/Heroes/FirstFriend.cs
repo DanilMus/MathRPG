@@ -12,18 +12,18 @@ namespace MathRPG.Entities.Heroes
             InitializeVariables();
         }
 
-        // public void OnArea2DMouseEntered()
-        // {
-        //     if ( is )
-        //     EmitSignal(nameof(MousePressed));
-        // }
-
-        public void OnArea2DInputEvent(Node viewport, InputEvent @event, int shapeIdx)
+        private void OnInputEvent(Node viewport, InputEvent @event, int shapeIdx)
         {
             if (!(@event is InputEventMouseButton || @event is InputEventScreenTouch && @event.IsPressed()))
                 return;
             
             EmitSignal(nameof(MousePressed));
+        }
+
+        public void SayHello(Vector2 forWhoPosition)
+        {
+            AnimatedSprite.Play("hello");
+            AnimatedSprite.FlipH = Position.x - forWhoPosition.x > 2;
         }
     }
 }

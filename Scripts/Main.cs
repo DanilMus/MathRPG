@@ -17,7 +17,8 @@ namespace MathRPG
         protected AnimationPlayer cutscenes; // для катсцены
         protected Node2D entities;
         protected List<Vector2> entitiesPositions = new List<Vector2>();
-        FirstFriend friend;
+        int cutsceneNum = 0; // номер текущей катсцены
+        string[] cutscenesNames; // хранение названий катсцен
 
         
 
@@ -31,7 +32,8 @@ namespace MathRPG
             if (@event is InputEventMouseButton && @event.IsPressed())
             {
                 CleanMoveArea();
-                SetPath();
+                var mousePosition = GetGlobalMousePosition();
+                SetPath(mousePosition, player);
             }
             else if (@event is InputEventScreenTouch && @event.IsPressed())
             {
@@ -57,14 +59,13 @@ namespace MathRPG
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
 
             cutscenes = GetNode<AnimationPlayer>("Cutscenes");
+            cutscenesNames = cutscenes.GetAnimationList();
         }
 
-        protected void SetPath()
+        public void SetPath(Vector2 whereGo, Entity whoGo)
         {
-            var mousePosition = GetGlobalMousePosition();
-
-            var path = pathFinder.GetMovePathInRadius(player.Position, mousePosition, player.MoveRadius, entitiesPositions);
-            player.Path = path;
+            var path = pathFinder.GetMovePathInRadius(whoGo.Position, whereGo, whoGo.MoveRadius, entitiesPositions);
+            whoGo.Path = path;
         }
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
@@ -94,6 +95,12 @@ namespace MathRPG
                 moveArea.QueueFree();
                 moveArea = null;
             }
+        }
+
+        public void PlayScene()
+        {
+            if (cutsceneNum < cutscenesNames.Length && !cutscenes.IsPlaying())
+                cutscenes.Play(cutscenesNames[ cutsceneNum++ ]);
         }
     }
 }
