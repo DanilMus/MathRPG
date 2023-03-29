@@ -10,7 +10,7 @@ namespace MathRPG.Entities
         private List<Vector2> _path;
         private AnimatedSprite _animatedSprite;
         private int _health;
-        private int _walkRadius;
+        private int _moveRadius;
 
         [Signal]
         public delegate void MovementDone();
@@ -55,17 +55,16 @@ namespace MathRPG.Entities
                 _health = value; 
             }
         }
-        protected int WalkRadius
+        public int MoveRadius
         {
-            get => _walkRadius;
+            get => _moveRadius;
             set
             {
-                if (value < 0) throw new ArgumentException("WalkRadius value should be more than zero");
+                if (value < 0) throw new ArgumentException("MoveRadius value should be more than zero");
 
-                _walkRadius = value; 
+                _moveRadius = value; 
             } 
         }
-
 
         public override void _PhysicsProcess(float delta)
         {
@@ -78,7 +77,7 @@ namespace MathRPG.Entities
         protected virtual void InitializeVariables()
         {
             Speed = 100;
-            WalkRadius = 3;
+            MoveRadius = 3;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             Path = new List<Vector2>();
         }

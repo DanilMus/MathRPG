@@ -1,62 +1,78 @@
-using System;
 using Godot;
 using System.Collections.Generic;
 
 using MathRPG.Path;
+using MathRPG.Entities;
 using MathRPG.Entities.Heroes;
-using MathRPG.Entities.Enemies;
 
 namespace MathRPG
 {
     public class Main : Node2D
     {
-        private PathFinder pathFinder; // Класс нахождения пути
-        private Player player; // Игрок
-        
+        protected PathFinder pathFinder; // Класс нахождения пути
+        protected Player player; // Игрок
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
-        Node2D moveArea; // для хранения сцен pathCellScene
-        AnimationPlayer cutscene; // для катсцены
+        protected Node2D moveArea; // для хранения сцен pathCellScene
+        protected AnimationPlayer cutscenes; // для катсцены
+        protected Node2D entities;
+        protected List<Vector2> entitiesPositions = new List<Vector2>();
+        FirstFriend friend;
+
         
 
         public override void _Ready() // Первая инициализация сцены
         {
-            pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
-
-            player = GetNode<Player>("Player");
-            player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
-
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4)); // Рисуем пути
-
-            cutscene = GetNode<AnimationPlayer>("Cutscenes");
+            InitializeVariables();
         }
 
         public override void _Input(InputEvent @event)
         {
-            if (!(@event is InputEventMouseButton) || !@event.IsPressed())
-                return;
-
-            CleanMoveArea();
-            SetPath();
+            if (@event is InputEventMouseButton && @event.IsPressed())
+            {
+                CleanMoveArea();
+                SetPath();
+            }
+            else if (@event is InputEventScreenTouch && @event.IsPressed())
+            {
+                // тут надо будет прописать для телефона
+            }
         }
         
 
-        void SetPath()
+        protected void InitializeVariables()
+        {
+            pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
+
+            entities = GetNode<Node2D>("Entities");
+            foreach(Entity entity in entities.GetChildren())
+            {
+                entity.Position = pathFinder.GetClosestPosition(entity.Position);
+                entitiesPositions.Add(entity.Position);
+            }
+
+            player = GetNode<Player>("Player");
+            player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
+
+            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
+
+            cutscenes = GetNode<AnimationPlayer>("Cutscenes");
+        }
+
+        protected void SetPath()
         {
             var mousePosition = GetGlobalMousePosition();
-            var areaInRadius = pathFinder.GetAreaInRadius(player.Position , 4);
-            var nextCell = pathFinder.GetClosestPositionFromList(mousePosition, areaInRadius);
 
-            var path = pathFinder.GetMovePath(player.Position, nextCell);
+            var path = pathFinder.GetMovePathInRadius(player.Position, mousePosition, player.MoveRadius, entitiesPositions);
             player.Path = path;
         }
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4));
+            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
         }
 
-        void DrawMoveArea(List<Vector2> area)
+        protected void DrawMoveArea(List<Vector2> area)
         {
             moveArea = new Node2D();
             
@@ -70,7 +86,7 @@ namespace MathRPG
             
             AddChild(moveArea);
         }
-        void CleanMoveArea()
+        protected void CleanMoveArea()
         {
             if (moveArea != null)
             {

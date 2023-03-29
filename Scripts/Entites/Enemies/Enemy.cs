@@ -5,16 +5,16 @@ namespace MathRPG.Entities.Enemies
 {
     public class Enemy : Entity
     {
-        int viewRadius;
+        int _viewRadius;
 
         protected int ViewRadius
         {
-            get => viewRadius;
+            get => _viewRadius;
             set 
             {
                 if (value < 0) throw new ArgumentException("ViewRadius value should be more than zero");
 
-                viewRadius = value;
+                _viewRadius = value;
             }
         }
 

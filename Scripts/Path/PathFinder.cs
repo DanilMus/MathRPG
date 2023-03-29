@@ -64,14 +64,27 @@ namespace MathRPG.Path
             return FromVector2ArrayToList(path);
         }
 
+        public List<Vector2> GetMovePathInRadius(Vector2 from, Vector2 to, int radius, List<Vector2> entities)
+        {
+            var areaInRadius = GetAreaInRadius(from, radius, entities);
+            var nextCell = GetClosestPositionFromList(to, areaInRadius);
+
+            var path = GetMovePath(from, nextCell);
+
+            return path;
+        }
+
         // Получаем массив клеток в определенном радиусе
-        public List<Vector2> GetAreaInRadius(Vector2 cell, int radius)
+        public List<Vector2> GetAreaInRadius(Vector2 cell, int radius, List<Vector2> entities)
         {
             var area = new List<Vector2>(); // Результат
 
             var toCentreOfCell = groundTileMap.CellSize / 2; // Для смещения центров ячеек
 
             var cellsWereAnalised = new Dictionary(); // Хранение проанализированных ячеек
+            foreach (Vector2 entity in entities) // Представляем препятсвия, как уже проанализированные клетки, чтобы алгоритм как бы их не видел
+                cellsWereAnalised[groundTileMap.WorldToMap(entity)] = true; 
+
             var cellsWillBeAnalised = new List<Vector2>() { // Ячейки для анализа
                 groundTileMap.WorldToMap(cell)
             }; 
