@@ -1,4 +1,6 @@
 using Godot;
+
+using MathRPG.Entities;
 using MathRPG.Entities.Heroes;
 
 namespace MathRPG.LVL
@@ -14,15 +16,18 @@ namespace MathRPG.LVL
 
             friend = entities.GetNode<FirstFriend>("FirstFriend");
             friend.Position = pathFinder.GetClosestPosition(friend.Position); // Прикрепление позиции игрока к сетке
-            
-            // friend = GetNode<AnimatedSprite>("FirstFriend");
-            // friend.Position = pathFinder.GetClosestPosition(friend.Position);
-            // friend.Connect("MousePressed", this, nameof(PlayScene));
         }
 
         public override void _Input(InputEvent @event)
         {
             base._Input(@event);
+        }
+
+        public void SetPathForFriend(Vector2 whereGo, NodePath whoGoPath)
+        {
+            Entity whoGo = GetNode<Entity>(whoGoPath);
+            var path = pathFinder.GetMovePath(whoGo.Position, whereGo);
+            whoGo.Path = path;
         }
     }
 }

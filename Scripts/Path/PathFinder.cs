@@ -1,5 +1,5 @@
 using Godot;
-// using System;
+using System;
 using System.Collections.Generic;
 using Godot.Collections;
 
@@ -121,7 +121,7 @@ namespace MathRPG.Path
         }
 
         // Вспомогательная функция для перевода из списка годота в список с# 
-        private List<Vector2> FromGodotArrayToList(Array godotArray) // Рразницы м/у этими списками почти нет, но у с# есть сортировка
+        private List<Vector2> FromGodotArrayToList(Godot.Collections.Array godotArray) // Рразницы м/у этими списками почти нет, но у с# есть сортировка
         {
             List<Vector2> result = new List<Vector2>();
             foreach (Vector2 vector2 in godotArray)
@@ -151,6 +151,9 @@ namespace MathRPG.Path
         // Вспомогательная функция для получение ближайщей позиции из массива
         public Vector2 GetClosestPositionFromList(Vector2 to, List<Vector2> listv) // Например, чтобы найти точку ближайщую к персонажу изходя из его радиуса движения
         {
+            if (listv == null || listv.Count == 0)
+                throw new ArgumentNullException();
+
             Vector2 ClosestPosition = listv[0];
 
             foreach (Vector2 pos in listv)

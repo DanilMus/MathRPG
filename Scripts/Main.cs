@@ -46,11 +46,13 @@ namespace MathRPG
         {
             pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
+            // Работа с другими существами
             entities = GetNode<Node2D>("Entities");
             foreach(Entity entity in entities.GetChildren())
             {
                 entity.Position = pathFinder.GetClosestPosition(entity.Position);
                 entitiesPositions.Add(entity.Position);
+                entity.Connect("MovementDone", this, nameof(OnEitityMovementDone));
             }
 
             player = GetNode<Player>("Player");
@@ -64,12 +66,20 @@ namespace MathRPG
 
         public void SetPath(Vector2 whereGo, Entity whoGo)
         {
+            // LoadEnitiesPositions();
             var path = pathFinder.GetMovePathInRadius(whoGo.Position, whereGo, whoGo.MoveRadius, entitiesPositions);
             whoGo.Path = path;
         }
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
+            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
+        }
+
+        public void OnEitityMovementDone()
+        {
+            CleanMoveArea();
+            LoadEnitiesPositions();
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
         }
 
@@ -100,7 +110,19 @@ namespace MathRPG
         public void PlayScene()
         {
             if (cutsceneNum < cutscenesNames.Length && !cutscenes.IsPlaying())
+            { 
                 cutscenes.Play(cutscenesNames[ cutsceneNum++ ]);
+                GD.Print(cutscenesNames[ cutsceneNum-1 ]);
+            }
+        }
+
+        protected void LoadEnitiesPositions()
+        {
+            entitiesPositions.Clear();
+            foreach(Entity entity in entities.GetChildren())
+            {
+                entitiesPositions.Add(entity.Position);
+            }
         }
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/LVLs/lvl0.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Heroes/Player.tscn" type="PackedScene" id=2]
@@ -69,8 +69,9 @@
 2/shapes = [  ]
 2/z_index = 0
 
-[sub_resource type="Animation" id=3]
+[sub_resource type="Animation" id=4]
 resource_name = "Scene1"
+length = 3.0
 tracks/0/type = "method"
 tracks/0/path = NodePath("Entities/FirstFriend")
 tracks/0/interp = 1
@@ -78,11 +79,29 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0.2 ),
+"times": PoolRealArray( 0.1 ),
 "transitions": PoolRealArray( 1 ),
 "values": [ {
-"args": [ Vector2( 112, 211 ) ],
+"args": [ Vector2( 120, 240 ) ],
 "method": "SayHello"
+} ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "Scene2"
+length = 3.0
+tracks/0/type = "method"
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [ Vector2( 460, 220 ), NodePath("Entities/FirstFriend") ],
+"method": "SetPathForFriend"
 } ]
 }
 
@@ -121,7 +140,8 @@ position = Vector2( 207, 209 )
 offset = Vector2( 0, 16 )
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
-anims/Scene1 = SubResource( 3 )
+anims/Scene1 = SubResource( 4 )
+anims/Scene2 = SubResource( 3 )
 
 [connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
 [connection signal="MousePressed" from="Entities/FirstFriend" to="." method="PlayScene"]

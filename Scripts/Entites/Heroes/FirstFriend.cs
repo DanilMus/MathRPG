@@ -10,6 +10,8 @@ namespace MathRPG.Entities.Heroes
         public override void _Ready()
         {
             InitializeVariables();
+            MoveRadius = 9;
+            Speed = 125;
         }
 
         private void OnInputEvent(Node viewport, InputEvent @event, int shapeIdx)
@@ -22,8 +24,8 @@ namespace MathRPG.Entities.Heroes
 
         public void SayHello(Vector2 forWhoPosition)
         {
-            AnimatedSprite.Play("hello");
             AnimatedSprite.FlipH = Position.x - forWhoPosition.x > 2;
+            AnimatedSprite.Play("hello");
         }
     }
 }
