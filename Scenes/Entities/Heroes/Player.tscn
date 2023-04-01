@@ -23,8 +23,7 @@
 [ext_resource path="res://Sprites/hero/hero_stay/1.png" type="Texture" id=21]
 
 [sub_resource type="CapsuleShape2D" id=1]
-radius = 8.0
-height = 16.0
+height = 10.0
 
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
@@ -48,5 +47,4 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "stay"
-frame = 3
 playing = true

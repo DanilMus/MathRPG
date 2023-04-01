@@ -27,5 +27,10 @@ namespace MathRPG.Entities.Heroes
             AnimatedSprite.FlipH = Position.x - forWhoPosition.x > 2;
             AnimatedSprite.Play("hello");
         }
+
+        public void Childhood()
+        {
+            GetTree().ChangeScene("res://Scenes/LVLs/lvl0_childhood.tscn");
+        }
     }
 }

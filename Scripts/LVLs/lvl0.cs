@@ -23,11 +23,16 @@ namespace MathRPG.LVL
             base._Input(@event);
         }
 
-        public void SetPathForFriend(Vector2 whereGo, NodePath whoGoPath)
+        public void SetPathFromCutscenes(Vector2 whereGo, NodePath whoGoPath) // Такая установка пути не ограничивает существа в радиусе передвижения
         {
             Entity whoGo = GetNode<Entity>(whoGoPath);
             var path = pathFinder.GetMovePath(whoGo.Position, whereGo);
             whoGo.Path = path;
+        }
+
+        public void AfterChildhood()
+        {
+            GetTree().ChangeScene("res://Scenes/LVLs/lvl0_afterChildhood.tscn");
         }
     }
 }

@@ -1,5 +1,5 @@
 using System;
-using MathRPG.Entities;
+using MathRPG.Entities.Heroes;
 
 namespace MathRPG.Entities.Enemies
 {
@@ -21,6 +21,10 @@ namespace MathRPG.Entities.Enemies
         public override void _Ready()
         {
             InitializeVariables();
+        }
+
+        public void KillingInstict(Entity aim)
+        {
         }
     }
 }

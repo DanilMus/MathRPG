@@ -85,6 +85,7 @@ namespace MathRPG
 
         protected void DrawMoveArea(List<Vector2> area)
         {
+            CleanMoveArea();
             moveArea = new Node2D();
             
             for (int i = 1; i < area.Count; i++) // пропускаяем ячейку, где стоит персонаж
