@@ -2,7 +2,7 @@ using Godot;
 
 namespace MathRPG.Entities.Heroes
 {
-    public class FirstFriend : Entity
+    public class FirstFriend : Hero
     {
         [Signal]
         public delegate void MousePressed(); // Доп копия, т.к. в главная сцена не видит объекты этой сцены

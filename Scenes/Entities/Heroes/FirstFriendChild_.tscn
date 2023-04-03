@@ -46,14 +46,8 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="FirstFriendChild" type="KinematicBody2D"]
-input_pickable = true
+[node name="Friend" type="Area2D"]
 script = ExtResource( 2 )
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -64,5 +58,3 @@ frames = SubResource( 2 )
 animation = "stay"
 frame = 1
 playing = true
-
-[connection signal="input_event" from="." to="." method="OnInputEvent"]

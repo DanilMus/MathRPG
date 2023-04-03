@@ -70,7 +70,7 @@ namespace MathRPG.Entities
         {
             if (Path.Count != 0)
                 Move(delta);
-            else if (AnimatedSprite.Animation == "walk")
+            else if (AnimatedSprite.Playing != true || AnimatedSprite.Animation == "walk")
                 AnimatedSprite.Play("stay");
         }
 
