@@ -11,6 +11,8 @@ namespace MathRPG.Entities
         private AnimatedSprite _animatedSprite;
         private int _health;
         private int _moveRadius;
+        File _memory;
+        string _memoryPath;
 
         [Signal]
         public delegate void MovementDone();
@@ -65,6 +67,26 @@ namespace MathRPG.Entities
                 _moveRadius = value; 
             } 
         }
+        protected File Memory
+        {
+            get => _memory;
+            set
+            {
+                if (value == null) throw new ArgumentException();
+
+                _memory = value;
+            }
+        }
+        protected string MemoryPath
+        {
+            get => _memoryPath;
+            set
+            {
+                if (value == null) throw new ArgumentException();
+
+                _memoryPath = value;
+            }
+        }
 
         public override void _PhysicsProcess(float delta)
         {
@@ -80,6 +102,7 @@ namespace MathRPG.Entities
             MoveRadius = 3;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             Path = new List<Vector2>();
+            Memory = new File();
         }
 
         protected virtual void Move(float delta)
