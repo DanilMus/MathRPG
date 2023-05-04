@@ -8,28 +8,31 @@ namespace MathRPG.Entities.Enemies
 {
     public abstract class Enemy : Entity
     {
+        // Переменные у врага
         // Доп св-ва у врага
         Area2D _area;
         int _viewRadius;
         double _learningSpeed;
-        
         // Нейроны ИИ
         double [,] neurons_0_1;
         double [,] neurons_1_2;
-
+        // Размеры ИИ
+        int startSize = 1 * 2 + 1 * 2; // Игрок + еще себя не забываем
+        int hiddenSize = 17;
+        int finishSize = 2;
         // Проверки на то, что произошло
         bool _isKilled;
         bool _isHurt;
         bool _isDead;
         bool _isInjured;
-
         // Запоминание
         Vector2 _move;
         double[,] _dropoutMask;
         double[,] _layer0, _layer1, _layer2;
 
 
-        // Доп св-ва у врага
+
+        // Свойства у врага
         protected int ViewRadius
         {
             get => _viewRadius;
@@ -60,7 +63,6 @@ namespace MathRPG.Entities.Enemies
                 _learningSpeed = value;
             }
         }
-       
        // Нейроны ИИ
         protected double[,] Neurons_0_1
         {
@@ -84,7 +86,6 @@ namespace MathRPG.Entities.Enemies
                 neurons_1_2 = value;
             }
         }
-
         // Проверки на то, что произошло
         protected bool IsKilled 
         { get => _isKilled; set {_isKilled = value;} }
@@ -95,11 +96,13 @@ namespace MathRPG.Entities.Enemies
         protected bool IsInjured 
         { get => _isInjured; set {_isInjured = value;} }
 
+
+
+        // Загрузка врага
         public override void _Ready()
         {
             InitializeVariables();
         }
-
         protected override void InitializeVariables()
         {
             base.InitializeVariables();
@@ -107,65 +110,31 @@ namespace MathRPG.Entities.Enemies
             Area = GetNode<Area2D>("Area2D");
             LearningSpeed = 0.001705;
 
-            LoadMemory();
             IsKilled = false;
             IsHurt = false;
             IsDead = false;
             IsInjured = false;
         }
 
+
+
+        // Обработка сигналов
         public void Killing(Node body)
         {
             if (body is Hero)
                 AnimatedSprite.Play("kills");
         }
-
-        protected void OnEnemyMovementDone() // Когда завершает ход
+        public void OnEnemyMovementDone() // Когда завершает ход
         {
-            Education();
-        }
-
-        // Работа с памятью
-        protected void SaveMemory()
-        {
-            Error error = Memory.Open(MemoryPath, File.ModeFlags.Write);
-
-            if (error != Error.Ok)
-            {
-                GD.PrintErr("Failed to open file for writting: ", MemoryPath);
-                return;
-            }
-
-            Memory.StoreVar(Neurons_0_1);
-            Memory.StoreVar(Neurons_1_2);
-
-            Memory.Close();
-        }
-        protected void LoadMemory()
-        {
-            Error error = Memory.Open(MemoryPath, File.ModeFlags.Read);
-
-            if (error != Error.Ok)
-            {
-                GD.PrintErr("Failed to open file for reading: ", MemoryPath);
-                return;
-            }
-
-            Neurons_0_1 = (double[,])Memory.GetVar();
-            Neurons_1_2 = (double[,])Memory.GetVar();
-
-            Memory.Close();
+            // Education();
         }
 
 
-        // ИИ
-        protected Vector2 Thinking(Vector2 playerPosition)
+
+        // Дальше идет ИИ и функции для его работы
+        public Vector2 Thinking(Vector2 playerPosition) // ИИ
         {
             LoadMemory();
-
-            int startSize = 1 * 2 + 1 * 2; // Игрок + еще себя не забываем
-            int hiddenSize = 17;
-            int finishSize = 2;
 
             if (
                 Neurons_0_1 == null || Neurons_1_2 == null 
@@ -185,13 +154,12 @@ namespace MathRPG.Entities.Enemies
             
             _layer2 = _MatrixMultiplication(_layer1, Neurons_1_2);
 
-            Vector2 result = new Vector2((float)_layer2[1,0], (float)_layer2[1,1]);
+            Vector2 result = new Vector2((float)_layer2[0,0], (float)_layer2[0,1]);
             _move = result;
 
             return result;
         }
-        
-        protected void Education()
+        protected void Education() // Обучение ИИ
         {
             double[,] layer2Delta;
             double[,] layer1Delta;
@@ -204,9 +172,10 @@ namespace MathRPG.Entities.Enemies
 
             Neurons_1_2 = _ArraysAddtion(Neurons_1_2, _Alpha( _MatrixMultiplication( _T(_layer1), layer2Delta ) ) );
             Neurons_0_1 = _ArraysAddtion(Neurons_0_1, _Alpha( _MatrixMultiplication( _T(_layer0), layer1Delta ) ) );
+        
+            SaveMemory();
         }
-
-        protected double[,] Loss() // Функция потерь для оценки правильности действий
+        protected double[,] Loss() // Функция потерь, кот. показывает, как ИИ стоит обучаться
         {
             double score = 0;
             
@@ -223,7 +192,58 @@ namespace MathRPG.Entities.Enemies
 
             return loss;
         }
+        // Работа с памятью
+        protected void SaveMemory()
+        {
+            Error error = Memory.Open(MemoryPath, File.ModeFlags.Write);
 
+            if (error != Error.Ok)
+            {
+                GD.PrintErr("Failed to open file for writting: ", MemoryPath);
+                return;
+            }
+
+            // Memory.StoreVar(Neurons_0_1);
+            // Memory.StoreVar(Neurons_1_2);
+
+            for (int i = 0; i < startSize; i++)
+                for (int j = 0; j < hiddenSize; j++)
+                    Memory.StoreDouble(Neurons_0_1[i,j]);
+            
+            for (int i = 0; i < hiddenSize; i++)
+                for (int j = 0; j < finishSize; j++)
+                    Memory.StoreDouble(Neurons_1_2[i,j]);
+
+            Memory.Close();
+        }
+        protected void LoadMemory()
+        {
+            Error error = Memory.Open(MemoryPath, File.ModeFlags.Read);
+
+            if (error != Error.Ok)
+            {
+                GD.PrintErr("Failed to open file for reading: ", MemoryPath);
+                return;
+            }
+
+            // Neurons_0_1 = 
+            // Neurons_1_2 = (double[,])Memory.GetVar();
+
+            double[,] matrix1 = new double[startSize, hiddenSize];
+            for (int i = 0; i < startSize; i++)
+                for (int j = 0; j < hiddenSize; j++)
+                    matrix1[i,j] = Memory.GetDouble();
+            
+            double[,] matrix2 = new double[hiddenSize, finishSize];
+            for (int i = 0; i < hiddenSize; i++)
+                for (int j = 0; j < finishSize; j++)
+                    matrix2[i,j] = Memory.GetDouble();
+
+            Neurons_0_1 = matrix1;
+            Neurons_1_2 = matrix2;
+
+            Memory.Close();
+        }
         // Подготовки для данных
         double[,] _FromInfoToDoubleLayer(Vector2 playerPosition, Vector2 Position)
         {
@@ -269,7 +289,6 @@ namespace MathRPG.Entities.Enemies
             
             return _matrix;
         }
-
         // Операции с массивами и матицами
         double[,] _MatrixMultiplication(double[,] matrix1, double[,] matrix2)
         {
@@ -284,7 +303,7 @@ namespace MathRPG.Entities.Enemies
         } 
         double[,] _ArraysMultiplication(double[,] arr1, double[,] arr2)
         {
-            if (arr1.Length == arr2.Length)
+            if (arr1.Length != arr2.Length)
                 throw new ArgumentException("Lengths are not equal.");
             
             for (int i = 0; i < arr1.GetLength(1); i++)
@@ -302,7 +321,6 @@ namespace MathRPG.Entities.Enemies
 
             return arr1;
         }
-    
         // ReLu и DropoutMask - создание своих корреляций в среднем слое
         double[,] _Relu(double[,] layer)
         {
@@ -333,7 +351,6 @@ namespace MathRPG.Entities.Enemies
             
             return dropoutMask;
         }
-
         // Alpha - скорость обучения
         double[,] _Alpha(double[,] layer, double alpha = 0.001705200401052023)
         {

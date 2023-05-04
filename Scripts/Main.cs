@@ -9,6 +9,7 @@ namespace MathRPG
 {
     public class Main : Node2D
     {
+        // Здесь подготавливаем переменнные
         protected PathFinder pathFinder; // Класс нахождения пути
         protected Player player; // Игрок
         [Export]
@@ -22,11 +23,36 @@ namespace MathRPG
 
         
 
+        // Здесь происходит загрузка
         public override void _Ready() // Первая инициализация сцены
         {
             InitializeVariables();
         }
+        protected void InitializeVariables()
+        {
+            pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
+            // Работа с другими существами
+            entities = GetNode<Node2D>("Entities");
+            foreach(Entity entity in entities.GetChildren())
+            {
+                entity.Position = pathFinder.GetClosestPosition(entity.Position);
+                entitiesPositions.Add(entity.Position);
+                entity.Connect("MovementDone", this, nameof(OnEntityMovementDone));
+            }
+
+            player = GetNode<Player>("Player");
+            player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
+
+            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
+
+            cutscenes = GetNode<AnimationPlayer>("Cutscenes");
+            cutscenesNames = cutscenes.GetAnimationList();
+        }
+
+
+
+        // Здесь обработка полученных нажатий
         public override void _Input(InputEvent @event)
         {
             if (@event is InputEventMouseButton && @event.IsPressed())
@@ -42,47 +68,27 @@ namespace MathRPG
         }
         
 
-        protected void InitializeVariables()
-        {
-            pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
-            // Работа с другими существами
-            entities = GetNode<Node2D>("Entities");
-            foreach(Entity entity in entities.GetChildren())
-            {
-                entity.Position = pathFinder.GetClosestPosition(entity.Position);
-                entitiesPositions.Add(entity.Position);
-                entity.Connect("MovementDone", this, nameof(OnEitityMovementDone));
-            }
-
-            player = GetNode<Player>("Player");
-            player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
-
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
-
-            cutscenes = GetNode<AnimationPlayer>("Cutscenes");
-            cutscenesNames = cutscenes.GetAnimationList();
-        }
-
-        public void SetPath(Vector2 whereGo, Entity whoGo)
-        {
-            // LoadEnitiesPositions();
-            var path = pathFinder.GetMovePathInRadius(whoGo.Position, whereGo, whoGo.MoveRadius, entitiesPositions);
-            whoGo.Path = path;
-        }
-
+        // Отработка сигналов
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
         }
-
-        public void OnEitityMovementDone()
+        public void OnEntityMovementDone()
         {
             CleanMoveArea();
             LoadEnitiesPositions();
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
         }
 
+
+        // Прочие функции
+        public void SetPath(Vector2 whereGo, Entity whoGo)
+        {
+            // LoadEnitiesPositions();
+            var path = pathFinder.GetMovePathInRadius(whoGo.Position, whereGo, whoGo.MoveRadius, entitiesPositions);
+            whoGo.Path = path;
+        }
         protected void DrawMoveArea(List<Vector2> area)
         {
             CleanMoveArea();
@@ -107,7 +113,6 @@ namespace MathRPG
                 moveArea = null;
             }
         }
-
         public void PlayScene()
         {
             if (cutsceneNum < cutscenesNames.Length && !cutscenes.IsPlaying())
@@ -116,7 +121,6 @@ namespace MathRPG
                 GD.Print(cutscenesNames[ cutsceneNum-1 ]);
             }
         }
-
         protected void LoadEnitiesPositions()
         {
             entitiesPositions.Clear();
