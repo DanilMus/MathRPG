@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Main.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=2]
@@ -8,6 +8,8 @@
 [ext_resource path="res://Sprites/cells/MathRPG_block (2).png" type="Texture" id=6]
 [ext_resource path="res://Scenes/PathCell.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scenes/HPBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/BigPotion.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/SmallPotion.tscn" type="PackedScene" id=10]
 
 [sub_resource type="TileSet" id=1]
 0/name = "MathRPG_cell.png 0"
@@ -96,6 +98,20 @@ margin_top = 342.0
 margin_right = 517.0
 margin_bottom = 443.0
 rect_scale = Vector2( 1.66695, 1.90118 )
+
+[node name="BigPotion" parent="Player/CanvasLayer" instance=ExtResource( 9 )]
+margin_left = 172.0
+margin_top = 6.0
+margin_right = 168.0
+margin_bottom = -158.0
+rect_scale = Vector2( 0.200572, 0.200572 )
+
+[node name="SmallPotion" parent="Player/CanvasLayer" instance=ExtResource( 10 )]
+margin_left = 172.0
+margin_top = 52.0
+margin_right = 168.0
+margin_bottom = -112.0
+rect_scale = Vector2( 0.200509, 0.199907 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )

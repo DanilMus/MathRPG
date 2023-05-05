@@ -8,9 +8,11 @@ namespace MathRPG
     {
         PathFinder pathFinder; // Класс нахождения пути
         Player player; // Игрок
+        List<Vector2> prevPlayerPath = null; //Предыдущий путь персонажа(запоминается с целью возврата к нему, если окажется, что мы нажали на кнопку)
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         Node2D moveArea; // для хранения сцен pathCellScene
+
         
 
         public override void _Ready() // Первая инициализация сцены
@@ -26,8 +28,10 @@ namespace MathRPG
         public override void _Input(InputEvent @event)
         {
             if (!(@event is InputEventMouseButton) || !(@event.IsPressed()))
+            {
                 return;
-            
+            }
+            prevPlayerPath=GetNode<Player>("Player").path;  //Запоминаем старый путь
             CleanMoveArea();
             SetPath();
         }
@@ -67,6 +71,22 @@ namespace MathRPG
                 RemoveChild(moveArea);
                 moveArea.QueueFree();
                 moveArea = null;
+            }
+        }
+        
+        public void _on_BigPotionButton_pressed() //Вызывается, когда нажата кнопка с большим зельем
+        {
+            if(prevPlayerPath!=null)
+            {
+               GetNode<Player>("Player").path=prevPlayerPath;  //Возвращаемся к старому пути
+            }
+        }
+        
+        public void _on_SmallPotionButton_pressed() //Вызывается, когда нажата кнопка с малым зельем
+        {
+            if(prevPlayerPath!=null)
+            {
+               GetNode<Player>("Player").path=prevPlayerPath;  //Возвращаемся к старому пути
             }
         }
     }

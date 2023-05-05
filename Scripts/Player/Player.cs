@@ -1,19 +1,23 @@
 using Godot;
 using System.Collections.Generic;
-
+using System;
 namespace MathRPG
 {
     public class Player: KinematicBody2D
     {
         const int speed = 100;
-        List<Vector2> path = new List<Vector2>() {};
+        public List<Vector2> path = new List<Vector2>() {};
         AnimatedSprite animatedSprite;
+        public int curHP=100;
+        public int maxHP=200;
         [Signal]
         public delegate void MovementDone();
 
         public override void _Ready()
         {
             animatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+            //Инициализация полоски хп
+            ((HealthBar)GetNode("CanvasLayer").GetNode("HealthBar")).UpdateHealthBar(curHP,maxHP);
         }
 
         public override void _PhysicsProcess(float delta)
@@ -47,5 +51,21 @@ namespace MathRPG
             if (path.Count == 0)
                 EmitSignal(nameof(MovementDone));
         }
+        
+        
+        //Выполняется при использовании большого зелья
+        public void _on_BigPotionButton_pressed(int heal)
+        {
+            curHP=Math.Min(maxHP,curHP+heal);                                                          //Обновить хп
+            ((HealthBar)GetNode("CanvasLayer").GetNode("HealthBar")).UpdateHealthBar(curHP,maxHP);     //Обновить полоску
+        }      
+        
+        //Выполняется при использовании малого зелья
+        public void _on_SmallPotionButton_pressed(int heal)
+        {
+            curHP=Math.Min(maxHP,curHP+heal);                                                          //Обновить хп
+            ((HealthBar)GetNode("CanvasLayer").GetNode("HealthBar")).UpdateHealthBar(curHP,maxHP);     //Обновить полоску
+        }     
+ 
     }
 }

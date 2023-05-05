@@ -2,21 +2,16 @@ using Godot;
 using System;
 
 /// <summary>
-/// В данный класс необходимо будет в дальнешем добавить привязку к перменной - сведениями о ХП
-/// (пока такой переменной не существует). Вместо этого для демонстрации работы, добавлены поля класса
-/// и изменен метод Process(он изменяет хп от 0 до максимума и наоборот)
-/// После добавления привязки демонстрацию нужно удалить (это все поля данного класса и функция _Ready)
+/// Данный класс представляет собой полоску здоровья персонажа. Её можно обновить при помощи функции UpdateHealthBar.
 /// </summary>
 public class HealthBar : TextureProgress
 {
-    private int HPFake = 2;                     //Фейковое ХП(для демонстрации работы метода UpdateHealthBar)
-    private int HPFakeMax = 500;                //Фейковое максимальное ХП(для демонстрации работы метода UpdateHealthBar)
-    private bool isHPFakeIncreasing = true;     //Переменная, обеспечивающая переход текущего хп от 0 до максимального
-
+  
+    
 
     public override void _Ready()
     {
-        //Вот здесь нужно добавить получение сведений о хп персонажа из другого источника
+
     }
 
 
@@ -35,24 +30,6 @@ public class HealthBar : TextureProgress
 
     public override void _Process(float delta)
     {
-        UpdateHealthBar(HPFake, HPFakeMax);     //Обновление полоски ХП в соответствии с фейк-значениями
-
-        //Изменение фейк-значений таким образом, чтобы текущее хп изменялось плавно от 0 до максимума и наоборот
-        if (isHPFakeIncreasing)
-        {
-            HPFake += 1;
-            if (HPFake >= HPFakeMax)
-            {
-                isHPFakeIncreasing = false;
-            }
-        }
-        else
-        {
-            HPFake -= 1;
-            if (HPFake <= 0)
-            {
-                isHPFakeIncreasing = true;
-            }
-        }
+       
     }
 }
