@@ -20,7 +20,8 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = ExtResource( 1 )
 animation = "stay"
-frame = 3
+frame = 2
 playing = true
 
+[connection signal="MovementDone" from="." to="." method="OnEnemyMovementDone"]
 [connection signal="body_entered" from="Area2D" to="." method="Killing"]

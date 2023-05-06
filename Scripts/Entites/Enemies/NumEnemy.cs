@@ -16,5 +16,14 @@ namespace MathRPG.Entities.Enemies
             MemoryPath = "res://Saves/NumEnemy";
             base.InitializeVariables();
         }
+    
+    
+
+        // Обработка сигналов
+        // public void OnEnemyMovementDone() // Когда завершает ход
+        // {
+        //     GD.Print("hiu");
+        //     // Education();
+        // }
     }
 }

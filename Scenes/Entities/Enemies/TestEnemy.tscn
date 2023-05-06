@@ -113,5 +113,4 @@ anims/scene2 = SubResource( 4 )
 [node name="TimerForMove" type="Timer" parent="."]
 autostart = true
 
-[connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
 [connection signal="timeout" from="TimerForMove" to="." method="OnTimerForMoveTimeout"]

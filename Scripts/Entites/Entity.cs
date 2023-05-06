@@ -1,3 +1,4 @@
+// Подключаем библиотеки
 using System;
 using System.Collections.Generic;
 using Godot;
@@ -6,6 +7,7 @@ namespace MathRPG.Entities
 {
     public abstract class Entity: KinematicBody2D
     {
+        // Подгружаем переменные существа
         private int _speed;
         private List<Vector2> _path;
         private AnimatedSprite _animatedSprite;
@@ -14,9 +16,13 @@ namespace MathRPG.Entities
         File _memory;
         string _memoryPath;
 
+
+        // Его сигналы
         [Signal]
         public delegate void MovementDone();
 
+
+        // Свойства
         public List<Vector2> Path
         {
             get => _path;
@@ -88,14 +94,9 @@ namespace MathRPG.Entities
             }
         }
 
-        public override void _PhysicsProcess(float delta)
-        {
-            if (Path.Count != 0)
-                Move(delta);
-            else if (AnimatedSprite.Playing != true || AnimatedSprite.Animation == "walk")
-                AnimatedSprite.Play("stay");
-        }
 
+
+        // Загрузка существа
         protected virtual void InitializeVariables()
         {
             Speed = 100;
@@ -105,6 +106,20 @@ namespace MathRPG.Entities
             Memory = new File();
         }
 
+
+
+        // Обработка действий в данный момент
+        public override void _PhysicsProcess(float delta)
+        {
+            if (Path.Count != 0)
+                Move(delta);
+            else if (AnimatedSprite.Playing != true || AnimatedSprite.Animation == "walk")
+                AnimatedSprite.Play("stay");
+        }
+
+
+
+        // Прочие функции
         protected virtual void Move(float delta)
         {
             // Включаем анимацию

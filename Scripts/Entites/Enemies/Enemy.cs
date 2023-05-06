@@ -114,6 +114,8 @@ namespace MathRPG.Entities.Enemies
             IsHurt = false;
             IsDead = false;
             IsInjured = false;
+
+            LoadMemory();
         }
 
 
@@ -126,9 +128,9 @@ namespace MathRPG.Entities.Enemies
         }
         public void OnEnemyMovementDone() // Когда завершает ход
         {
-            // Education();
+            GD.Print("hiu");
+            Education();
         }
-
 
 
         // Дальше идет ИИ и функции для его работы
@@ -141,10 +143,7 @@ namespace MathRPG.Entities.Enemies
                 || Neurons_0_1.GetLength(0) != startSize || Neurons_0_1.GetLength(1) != hiddenSize  
                 || Neurons_1_2.GetLength(0) != hiddenSize || Neurons_1_2.GetLength(1) != finishSize 
             )
-            {
                 _RandomInitNeurons(startSize, hiddenSize, finishSize);
-                SaveMemory();
-            }
 
             _layer0 = _FromInfoToDoubleLayer(playerPosition, Position);
             
@@ -157,23 +156,31 @@ namespace MathRPG.Entities.Enemies
             Vector2 result = new Vector2((float)_layer2[0,0], (float)_layer2[0,1]);
             _move = result;
 
+            SaveMemory();
+
             return result;
         }
-        protected void Education() // Обучение ИИ
+        public void Education() // Обучение ИИ
         {
+            LoadMemory();
+
             double[,] layer2Delta;
             double[,] layer1Delta;
-
+            
+            // Оценка ошибки
             layer2Delta = Loss();
 
             layer1Delta = _MatrixMultiplication(layer2Delta, _T(Neurons_1_2));
-            layer1Delta = _ArraysMultiplication(layer1Delta, _Relu(_layer1));
+            layer1Delta = _ArraysMultiplication(layer1Delta, _Relu2Deriv(_layer1));
             layer1Delta = _ArraysMultiplication(layer1Delta, _dropoutMask);
 
+            // Регулировка ошибки
             Neurons_1_2 = _ArraysAddtion(Neurons_1_2, _Alpha( _MatrixMultiplication( _T(_layer1), layer2Delta ) ) );
             Neurons_0_1 = _ArraysAddtion(Neurons_0_1, _Alpha( _MatrixMultiplication( _T(_layer0), layer1Delta ) ) );
-        
+
             SaveMemory();
+
+            GD.Print("WOW!");
         }
         protected double[,] Loss() // Функция потерь, кот. показывает, как ИИ стоит обучаться
         {
@@ -203,16 +210,25 @@ namespace MathRPG.Entities.Enemies
                 return;
             }
 
-            // Memory.StoreVar(Neurons_0_1);
-            // Memory.StoreVar(Neurons_1_2);
-
+            // загружаем нейроны
             for (int i = 0; i < startSize; i++)
                 for (int j = 0; j < hiddenSize; j++)
                     Memory.StoreDouble(Neurons_0_1[i,j]);
-            
             for (int i = 0; i < hiddenSize; i++)
                 for (int j = 0; j < finishSize; j++)
                     Memory.StoreDouble(Neurons_1_2[i,j]);
+
+            // загружаем слои 
+            for (int i = 0; i < startSize; i++)
+                Memory.StoreDouble(_layer0[0,i]);
+            for (int i = 0; i < hiddenSize; i++)
+                Memory.StoreDouble(_layer1[0,i]);
+            for (int i = 0; i < finishSize; i++)
+                Memory.StoreDouble(_layer2[0,i]);
+            
+            // про dropoutmask не забываем
+            for (int i = 0; i < hiddenSize; i++)
+                Memory.StoreDouble(_dropoutMask[0,i]);
 
             Memory.Close();
         }
@@ -226,21 +242,40 @@ namespace MathRPG.Entities.Enemies
                 return;
             }
 
-            // Neurons_0_1 = 
-            // Neurons_1_2 = (double[,])Memory.GetVar();
-
-            double[,] matrix1 = new double[startSize, hiddenSize];
+            // загружаем нейроны
+            double[,] matrix = new double[startSize, hiddenSize];
             for (int i = 0; i < startSize; i++)
                 for (int j = 0; j < hiddenSize; j++)
-                    matrix1[i,j] = Memory.GetDouble();
-            
-            double[,] matrix2 = new double[hiddenSize, finishSize];
+                    matrix[i,j] = Memory.GetDouble();
+            Neurons_0_1 = matrix;
+
+            matrix = new double[hiddenSize, finishSize];
             for (int i = 0; i < hiddenSize; i++)
                 for (int j = 0; j < finishSize; j++)
-                    matrix2[i,j] = Memory.GetDouble();
+                    matrix[i,j] = Memory.GetDouble();
+            Neurons_1_2 = matrix;
 
-            Neurons_0_1 = matrix1;
-            Neurons_1_2 = matrix2;
+            // загружаем слои
+            double[,] layer = new double[1, startSize];
+            for (int i = 0; i < startSize; i++)
+                layer[0,i] = Memory.GetDouble();
+            _layer0 = layer;
+
+            layer = new double[1, hiddenSize];
+            for (int i = 0; i < hiddenSize; i++)
+                layer[0,i] = Memory.GetDouble();
+            _layer1 = layer;
+
+            layer = new double[1, finishSize];
+            for (int i = 0; i < finishSize; i++)
+                layer[0,i] = Memory.GetDouble();
+            _layer2 = layer;
+
+            // и dropoutMask
+            layer = new double[1, hiddenSize];
+            for (int i = 0; i < hiddenSize; i++)
+                layer[0,i] = Memory.GetDouble();
+            _dropoutMask = layer;
 
             Memory.Close();
         }
@@ -281,9 +316,10 @@ namespace MathRPG.Entities.Enemies
         }
         double[,] _T(double[,] matrix) // инверитровать
         {
-            double[,] _matrix = new double[matrix.GetLength(1), matrix.GetLength(0)];
+            int size0 = matrix.GetLength(0); int size1 = matrix.GetLength(1);
+            double[,] _matrix = new double[size1, size0];
 
-            for (int j = 0; j < matrix.GetLength(1); j++)
+            for (int j = 0; j < size1; j++)
                 for (int i = 0; i < matrix.GetLength(0); i++)
                     _matrix[j, i] = matrix[i, j];
             
@@ -292,6 +328,8 @@ namespace MathRPG.Entities.Enemies
         // Операции с массивами и матицами
         double[,] _MatrixMultiplication(double[,] matrix1, double[,] matrix2)
         {
+            // здесь стоит добавить проверку 
+
             double[,] result = new double[matrix1.GetLength(0), matrix2.GetLength(1)];
 
             for (int i = 0; i < matrix1.GetLength(0); i++)
@@ -313,7 +351,7 @@ namespace MathRPG.Entities.Enemies
         }
         double[,] _ArraysAddtion(double[,] arr1, double[,] arr2)
         {
-            if (arr1.Length == arr2.Length)
+            if (arr1.Length != arr2.Length)
                 throw new ArgumentException("Lengths are not equal.");
             
             for (int i = 0; i < arr1.GetLength(1); i++)
@@ -358,6 +396,27 @@ namespace MathRPG.Entities.Enemies
                 layer[0, i] *= alpha;
             
             return layer;
+        }
+        // Демонстрация
+        public void ShowInfo()
+        {
+            // GD.Print("Нейроны м/у 0 и 1 слоями");
+            // for (int i = 0; i < startSize; i++)
+            //     for (int j = 0; j < hiddenSize; j++)
+            //         GD.Print(Neurons_0_1[i,j]);
+            // GD.Print("Нейроны м/у 1 и 2 слоями");
+            // for (int i = 0; i < hiddenSize; i++)
+            //     for (int j = 0; j < finishSize; j++)
+            //         GD.Print(Neurons_1_2[i,j]);
+            GD.Print("Слой 0");
+            for (int i = 0; i < startSize; i++)
+                GD.Print(_layer0[0,i]);
+            GD.Print("Слой 1");
+            for (int i = 0; i < hiddenSize; i++)
+                GD.Print(_layer1[0,i]);
+            GD.Print("Слой 2");
+            for (int i = 0; i < finishSize; i++)
+                GD.Print(_layer2[0,i]);
         }
     }
 }
