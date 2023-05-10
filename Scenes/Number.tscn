@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Sprites/Attack/MathRPG_attack_block.png" type="Texture" id=1]
+[ext_resource path="res://Scenes/NumberNode.cs" type="Script" id=2]
+
+[node name="Number" type="Control"]
+script = ExtResource( 2 )
+
+[node name="AttackBlock" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+centered = false
+
+[node name="Value" type="Label" parent="AttackBlock"]
+modulate = Color( 0, 0, 0, 1 )
+margin_bottom = 14.0
+align = 1
+valign = 1

@@ -93,5 +93,3 @@ current = true
 smoothing_enabled = true
 
 [node name="CutScene" type="AnimationPlayer" parent="."]
-
-[connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]

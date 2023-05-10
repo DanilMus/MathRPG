@@ -8,8 +8,12 @@ namespace MathRPG
     {
         PathFinder pathFinder; // Класс нахождения пути
         Player player; // Игрок
+        
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
+
+        public Node2D thisScene;
+
         Node2D moveArea; // для хранения сцен pathCellScene
         
 
@@ -44,7 +48,15 @@ namespace MathRPG
 
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4));
+            InitFight();
+
+            // DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , 4));
+        }
+
+        private void InitFight()
+        {
+            PackedScene FightingScene = (PackedScene) ResourceLoader.Load("res://Scenes/Fighting.tscn");
+            GetTree().Root.AddChild(FightingScene.Instance());
         }
 
         private void DrawMoveArea(List<Vector2> area)
