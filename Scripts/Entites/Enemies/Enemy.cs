@@ -9,6 +9,7 @@ namespace MathRPG.Entities.Enemies
     public abstract class Enemy : Entity
     {
         // Переменные у врага
+        static Random random = new Random();
         // Доп св-ва у врага
         Area2D _area;
         int _viewRadius;
@@ -128,7 +129,6 @@ namespace MathRPG.Entities.Enemies
         }
         public void OnEnemyMovementDone() // Когда завершает ход
         {
-            GD.Print("hiu");
             Education();
         }
 
@@ -157,7 +157,7 @@ namespace MathRPG.Entities.Enemies
             _move = result;
 
             SaveMemory();
-
+            GD.Print(result);
             return result;
         }
         public void Education() // Обучение ИИ
@@ -246,13 +246,21 @@ namespace MathRPG.Entities.Enemies
             double[,] matrix = new double[startSize, hiddenSize];
             for (int i = 0; i < startSize; i++)
                 for (int j = 0; j < hiddenSize; j++)
+                {
                     matrix[i,j] = Memory.GetDouble();
+                    if (double.IsNaN(matrix[i,j]))
+                        matrix[i,j] = random.NextDouble();
+                }
             Neurons_0_1 = matrix;
 
             matrix = new double[hiddenSize, finishSize];
             for (int i = 0; i < hiddenSize; i++)
                 for (int j = 0; j < finishSize; j++)
+                {
                     matrix[i,j] = Memory.GetDouble();
+                    if (double.IsNaN(matrix[i,j]))
+                        matrix[i,j] = random.NextDouble();
+                }
             Neurons_1_2 = matrix;
 
             // загружаем слои
@@ -301,8 +309,6 @@ namespace MathRPG.Entities.Enemies
         }
         void _RandomInitNeurons(int startSize, int hiddenSize, int finishSize)
         {
-            Random random = new Random();
-
             Neurons_0_1 = new double[startSize, hiddenSize];
             Neurons_1_2 = new double[hiddenSize, finishSize];
 
@@ -328,13 +334,16 @@ namespace MathRPG.Entities.Enemies
         // Операции с массивами и матицами
         double[,] _MatrixMultiplication(double[,] matrix1, double[,] matrix2)
         {
-            // здесь стоит добавить проверку 
+            if (matrix1.GetLength(1) != matrix2.GetLength(0))
+                throw new ArgumentException(
+                    $"Lengths of the matrixes are not equal. {matrix1.GetLength(1)} != {matrix2.GetLength(0)}"
+                );
 
             double[,] result = new double[matrix1.GetLength(0), matrix2.GetLength(1)];
 
             for (int i = 0; i < matrix1.GetLength(0); i++)
                 for (int j = 0; j < matrix2.GetLength(1); j++)
-                    for (int k = 0; k < matrix1.GetLength(0); k++)
+                    for (int k = 0; k < matrix1.GetLength(1); k++)
                         result[i, j] += matrix1[i, k] * matrix2[k, j];
 
             return result;
@@ -342,7 +351,7 @@ namespace MathRPG.Entities.Enemies
         double[,] _ArraysMultiplication(double[,] arr1, double[,] arr2)
         {
             if (arr1.Length != arr2.Length)
-                throw new ArgumentException("Lengths are not equal.");
+                throw new ArgumentException("Lengths of the arrays are not equal.");
             
             for (int i = 0; i < arr1.GetLength(1); i++)
                 arr1[0, i] *= arr2[0, i];
@@ -400,23 +409,23 @@ namespace MathRPG.Entities.Enemies
         // Демонстрация
         public void ShowInfo()
         {
-            // GD.Print("Нейроны м/у 0 и 1 слоями");
-            // for (int i = 0; i < startSize; i++)
-            //     for (int j = 0; j < hiddenSize; j++)
-            //         GD.Print(Neurons_0_1[i,j]);
-            // GD.Print("Нейроны м/у 1 и 2 слоями");
-            // for (int i = 0; i < hiddenSize; i++)
-            //     for (int j = 0; j < finishSize; j++)
-            //         GD.Print(Neurons_1_2[i,j]);
-            GD.Print("Слой 0");
+            GD.Print("Нейроны м/у 0 и 1 слоями");
             for (int i = 0; i < startSize; i++)
-                GD.Print(_layer0[0,i]);
-            GD.Print("Слой 1");
+                for (int j = 0; j < hiddenSize; j++)
+                    GD.Print(Neurons_0_1[i,j]);
+            GD.Print("Нейроны м/у 1 и 2 слоями");
             for (int i = 0; i < hiddenSize; i++)
-                GD.Print(_layer1[0,i]);
-            GD.Print("Слой 2");
-            for (int i = 0; i < finishSize; i++)
-                GD.Print(_layer2[0,i]);
+                for (int j = 0; j < finishSize; j++)
+                    GD.Print(Neurons_1_2[i,j]);
+            // GD.Print("Слой 0");
+            // for (int i = 0; i < startSize; i++)
+            //     GD.Print(_layer0[0,i]);
+            // GD.Print("Слой 1");
+            // for (int i = 0; i < hiddenSize; i++)
+            //     GD.Print(_layer1[0,i]);
+            // GD.Print("Слой 2");
+            // for (int i = 0; i < finishSize; i++)
+            //     GD.Print(_layer2[0,i]);
         }
     }
 }

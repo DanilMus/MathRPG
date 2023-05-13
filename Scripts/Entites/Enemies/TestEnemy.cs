@@ -20,8 +20,6 @@ namespace MathRPG.LVL
 
             enemy = GetNode<NumEnemy>("Enemy");
             enemy.Position = pathFinder.GetClosestPosition(enemy.Position); 
-            // enemy.ShowInfo();
-            enemy.Education();
         }
 
 
