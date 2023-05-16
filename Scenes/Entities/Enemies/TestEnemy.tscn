@@ -101,16 +101,20 @@ offset = Vector2( 0, 16 )
 current = true
 smoothing_enabled = true
 
-[node name="Entities" type="Node2D" parent="."]
+[node name="Enemies" type="Node2D" parent="."]
 
-[node name="Enemy" parent="." instance=ExtResource( 8 )]
+[node name="Enemy" parent="Enemies" instance=ExtResource( 8 )]
 position = Vector2( 208, 178 )
+
+[node name="Enemy2" parent="Enemies" instance=ExtResource( 8 )]
+position = Vector2( 207, 208 )
+
+[node name="TimerForMove" type="Timer" parent="."]
+autostart = true
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
 anims/scene1 = SubResource( 3 )
 anims/scene2 = SubResource( 4 )
 
-[node name="TimerForMove" type="Timer" parent="."]
-autostart = true
-
+[connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
 [connection signal="timeout" from="TimerForMove" to="." method="OnTimerForMoveTimeout"]

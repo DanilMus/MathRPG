@@ -9,7 +9,7 @@ namespace MathRPG.LVL
     public class TestEnemy : Main
     {
         // Подготовка переменных
-        NumEnemy enemy; // враг
+        Node2D enemies;
         
 
 
@@ -18,8 +18,8 @@ namespace MathRPG.LVL
         {
             base.InitializeVariables();
 
-            enemy = GetNode<NumEnemy>("Enemy");
-            enemy.Position = pathFinder.GetClosestPosition(enemy.Position); 
+            enemies = GetNode<Node2D>("Enemies");
+
         }
 
 

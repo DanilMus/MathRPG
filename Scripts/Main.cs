@@ -10,14 +10,21 @@ namespace MathRPG
     public class Main : Node2D
     {
         // Здесь подготавливаем переменнные
+        // Навигация по миру
         protected PathFinder pathFinder; // Класс нахождения пути
+
+        // Игрок и все с ним связанное 
         protected Player player; // Игрок
         [Export]
         public PackedScene pathCellScene; // переменная для хранения нашей сцены
         protected Node2D moveArea; // для хранения сцен pathCellScene
+
+        // Другие существа
+        protected List<Entity> entities = new List<Entity>();
+        protected List<Vector2> entitiesPositions = new List<Vector2>(); // позиции других существ для отрисовки пути
+        
+        // Работа с катсценами
         protected AnimationPlayer cutscenes; // для катсцены
-        protected Node2D entities;
-        protected List<Vector2> entitiesPositions = new List<Vector2>();
         int cutsceneNum = 0; // номер текущей катсцены
         string[] cutscenesNames; // хранение названий катсцен
 
@@ -30,22 +37,15 @@ namespace MathRPG
         }
         protected void InitializeVariables()
         {
+            // Подключение навигации
             pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
-            // Работа с другими существами
-            entities = GetNode<Node2D>("Entities");
-            foreach(Entity entity in entities.GetChildren())
-            {
-                entity.Position = pathFinder.GetClosestPosition(entity.Position);
-                entitiesPositions.Add(entity.Position);
-                entity.Connect("MovementDone", this, nameof(OnEntityMovementDone));
-            }
-
+            // Подключение игрока и всем связанным с ним
             player = GetNode<Player>("Player");
             player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
-
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
 
+            // Подключение катсцен
             cutscenes = GetNode<AnimationPlayer>("Cutscenes");
             cutscenesNames = cutscenes.GetAnimationList();
         }
@@ -123,11 +123,13 @@ namespace MathRPG
         }
         protected void LoadEnitiesPositions()
         {
-            entitiesPositions.Clear();
-            foreach(Entity entity in entities.GetChildren())
-            {
+            entitiesPositions = new List<Vector2>();
+            foreach (Entity entity in entities)
                 entitiesPositions.Add(entity.Position);
-            }
+        }
+        protected void PrepareEneities()
+        {
+            
         }
     }
 }
