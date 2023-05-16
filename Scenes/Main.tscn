@@ -94,24 +94,24 @@ position = Vector2( 114, 178 )
 
 [node name="HealthBar" parent="Player/CanvasLayer" instance=ExtResource( 8 )]
 margin_left = 12.0
-margin_top = 342.0
+margin_top = 344.0
 margin_right = 517.0
-margin_bottom = 443.0
+margin_bottom = 445.0
 rect_scale = Vector2( 1.66695, 1.90118 )
 
 [node name="BigPotion" parent="Player/CanvasLayer" instance=ExtResource( 9 )]
-margin_left = 172.0
-margin_top = 6.0
-margin_right = 168.0
-margin_bottom = -158.0
-rect_scale = Vector2( 0.200572, 0.200572 )
+margin_left = 192.0
+margin_top = 32.0
+margin_right = 188.0
+margin_bottom = -132.0
+rect_scale = Vector2( 0.145, 0.145 )
 
 [node name="SmallPotion" parent="Player/CanvasLayer" instance=ExtResource( 10 )]
-margin_left = 172.0
-margin_top = 52.0
-margin_right = 168.0
-margin_bottom = -112.0
-rect_scale = Vector2( 0.200509, 0.199907 )
+margin_left = 192.0
+margin_top = 64.0
+margin_right = 188.0
+margin_bottom = -100.0
+rect_scale = Vector2( 0.145, 0.145 )
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )
