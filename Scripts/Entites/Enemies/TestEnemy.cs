@@ -16,10 +16,20 @@ namespace MathRPG.LVL
         // Загрузка сцены
         public override void _Ready() 
         {
+            InitializeVariables();
+        }
+        protected override void InitializeVariables()
+        {
+            // Основные подключения
             base.InitializeVariables();
 
+            // И новое подлючение (враг)
             enemies = GetNode<Node2D>("Enemies");
-
+            // Добавим новых существ (врагов)
+            foreach (Entity entity in enemies.GetChildren())
+                entities.Add(entity);
+            // И так как мы подлючили новых существ
+            PrepareEntities();
         }
 
 
@@ -35,9 +45,12 @@ namespace MathRPG.LVL
         // Обработка сигналов
         public void OnTimerForMoveTimeout() // Высчитвает время, чтобы враг сходил
         {
-            // Враг делает свой ход
-            Vector2 move = enemy.Thinking(player.Position);
-            SetPath(move, enemy);
+            foreach (NumEnemy enemy in enemies.GetChildren())
+            {
+                // Враг делает свой ход
+                Vector2 move = enemy.Thinking(player.Position);
+                SetPath(move, enemy);
+            }
         }
     }
 }

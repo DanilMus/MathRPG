@@ -10,23 +10,24 @@ namespace MathRPG
     public class Main : Node2D
     {
         // Здесь подготавливаем переменнные
-        // Навигация по миру
-        protected PathFinder pathFinder; // Класс нахождения пути
+            // Навигация по миру
+                protected PathFinder pathFinder; // Класс нахождения пути
 
-        // Игрок и все с ним связанное 
-        protected Player player; // Игрок
-        [Export]
-        public PackedScene pathCellScene; // переменная для хранения нашей сцены
-        protected Node2D moveArea; // для хранения сцен pathCellScene
+            // Игрок и все с ним связанное 
+                protected Player player; // Игрок
+                [Export]
+                public PackedScene pathCellScene; // Переменная для хранения нашей сцены
+                protected Node2D moveArea; // Для хранения сцен pathCellScene
+                List<Vector2> lastMoveArea = new List<Vector2>(); // Сможем проверять, изменились ли возможности пути
 
-        // Другие существа
-        protected List<Entity> entities = new List<Entity>();
-        protected List<Vector2> entitiesPositions = new List<Vector2>(); // позиции других существ для отрисовки пути
+            // Другие существа
+                protected List<Entity> entities = new List<Entity>();
+                protected List<Vector2> entitiesPositions = new List<Vector2>(); // Позиции других существ для отрисовки пути
         
-        // Работа с катсценами
-        protected AnimationPlayer cutscenes; // для катсцены
-        int cutsceneNum = 0; // номер текущей катсцены
-        string[] cutscenesNames; // хранение названий катсцен
+            // Работа с катсценами
+                protected AnimationPlayer cutscenes; // Для катсцены
+                int cutsceneNum = 0; // Номер текущей катсцены
+                string[] cutscenesNames; // Хранение названий катсцен
 
         
 
@@ -35,7 +36,7 @@ namespace MathRPG
         {
             InitializeVariables();
         }
-        protected void InitializeVariables()
+        protected virtual void InitializeVariables()
         {
             // Подключение навигации
             pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
@@ -76,7 +77,6 @@ namespace MathRPG
         }
         public void OnEntityMovementDone()
         {
-            CleanMoveArea();
             LoadEnitiesPositions();
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
         }
@@ -85,13 +85,31 @@ namespace MathRPG
         // Прочие функции
         public void SetPath(Vector2 whereGo, Entity whoGo)
         {
-            // LoadEnitiesPositions();
+            LoadEnitiesPositions();
             var path = pathFinder.GetMovePathInRadius(whoGo.Position, whereGo, whoGo.MoveRadius, entitiesPositions);
             whoGo.Path = path;
         }
         protected void DrawMoveArea(List<Vector2> area)
         {
+            // Проверка, чтобы не рисовать то же самое 
+            if (area.Count == lastMoveArea.Count)
+            {
+                bool isTheSame = true;
+                for (int i = 0; i < area.Count; i++)
+                    if (area[i] != lastMoveArea[i])
+                    {
+                        isTheSame = false;
+                        break;
+                    }
+
+                if (isTheSame)
+                    return;
+            }
+
+
             CleanMoveArea();
+            lastMoveArea = area;
+
             moveArea = new Node2D();
             
             for (int i = 1; i < area.Count; i++) // пропускаяем ячейку, где стоит персонаж
@@ -123,13 +141,18 @@ namespace MathRPG
         }
         protected void LoadEnitiesPositions()
         {
-            entitiesPositions = new List<Vector2>();
+            entitiesPositions.Clear();
             foreach (Entity entity in entities)
                 entitiesPositions.Add(entity.Position);
         }
-        protected void PrepareEneities()
+        protected void PrepareEntities()
         {
-            
+            foreach (Entity entity in entities)
+            {
+                entity.Position = pathFinder.GetClosestPosition(entity.Position);
+                entitiesPositions.Add(entity.Position);
+                entity.Connect("MovementDone", this, nameof(OnEntityMovementDone));
+            }    
         }
     }
 }

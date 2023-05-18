@@ -83,7 +83,8 @@ namespace MathRPG.Path
 
             var cellsWereAnalised = new Dictionary(); // Хранение проанализированных ячеек
             foreach (Vector2 entity in entities) // Представляем препятсвия, как уже проанализированные клетки, чтобы алгоритм как бы их не видел
-                cellsWereAnalised[groundTileMap.WorldToMap(entity)] = true; 
+                if (cell != entity) // Обязательная проверка, чтобы не исключать позицию, на кот. стоим, иначе все просто не будет работать
+                    cellsWereAnalised[groundTileMap.WorldToMap(entity)] = true; 
 
             var cellsWillBeAnalised = new List<Vector2>() { // Ячейки для анализа
                 groundTileMap.WorldToMap(cell)
@@ -151,8 +152,10 @@ namespace MathRPG.Path
         // Вспомогательная функция для получение ближайщей позиции из массива
         public Vector2 GetClosestPositionFromList(Vector2 to, List<Vector2> listv) // Например, чтобы найти точку ближайщую к персонажу изходя из его радиуса движения
         {
-            if (listv == null || listv.Count == 0)
+            if (listv == null)
                 throw new ArgumentNullException();
+            if (listv.Count == 0)
+                throw new Exception("List has 0 length.");
 
             Vector2 ClosestPosition = listv[0];
 

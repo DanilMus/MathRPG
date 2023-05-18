@@ -63,7 +63,7 @@ namespace MathRPG.Entities
                 _health = value; 
             }
         }
-        public int MoveRadius
+        public  int MoveRadius
         {
             get => _moveRadius;
             set

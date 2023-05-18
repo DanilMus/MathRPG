@@ -16,10 +16,16 @@ namespace MathRPG.LVL
         // Загрузка сцены
         public override void _Ready() // Первая инициализация сцены
         {
+            InitializeVariables();
+        }
+        protected override void InitializeVariables()
+        {
+            // Старые подлючения
             base.InitializeVariables();
 
-            friend = entities.GetNode<FirstFriend>("FirstFriend");
-            friend.Position = pathFinder.GetClosestPosition(friend.Position); // Прикрепление позиции игрока к сетке
+            // И новый друг
+            friend = GetNode<FirstFriend>("FirstFriend");
+            entities.Add((Entity)friend);
         }
 
 
