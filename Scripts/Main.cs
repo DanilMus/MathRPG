@@ -19,8 +19,8 @@ namespace MathRPG
 		{
 			pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
 
-			var hudLink = ResourceLoader.Load<PackedScene>("res://Scenes/HUD.tscn").Instance();
-			AddChild(hudLink);
+			var hud = ResourceLoader.Load<PackedScene>("res://Scenes/HUD.tscn").Instance();
+			AddChild(hud);
 
 			player = GetNode<Player>("Player");
 			player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
