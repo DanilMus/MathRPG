@@ -111,7 +111,7 @@ namespace MathRPG.Entities
         // Обработка действий в данный момент
         public override void _PhysicsProcess(float delta)
         {
-            if (Path.Count != 0)
+            if (!(Path.Count == 0 || (AnimatedSprite.Playing == true && AnimatedSprite.Animation == "kill")))
                 Move(delta);
             else if (AnimatedSprite.Playing != true || AnimatedSprite.Animation == "walk")
                 AnimatedSprite.Play("stay");

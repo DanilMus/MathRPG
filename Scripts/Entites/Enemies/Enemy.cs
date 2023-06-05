@@ -122,10 +122,13 @@ namespace MathRPG.Entities.Enemies
 
 
         // Обработка сигналов
-        public void Killing(Node body)
+        public void Killing(Entity body)
         {
-            if (body is Hero)
+            if (body is Player)
+            {
+                GD.Print("kill");
                 AnimatedSprite.Play("kills");
+            }
         }
         public void OnEnemyMovementDone() // Когда завершает ход
         {
@@ -157,7 +160,7 @@ namespace MathRPG.Entities.Enemies
             _move = result;
 
             SaveMemory();
-            GD.Print(result);
+            
             return result;
         }
         public void Education() // Обучение ИИ
@@ -179,8 +182,6 @@ namespace MathRPG.Entities.Enemies
             Neurons_0_1 = _ArraysAddtion(Neurons_0_1, _Alpha( _MatrixMultiplication( _T(_layer0), layer1Delta ) ) );
 
             SaveMemory();
-
-            GD.Print("WOW!");
         }
         protected double[,] Loss() // Функция потерь, кот. показывает, как ИИ стоит обучаться
         {
