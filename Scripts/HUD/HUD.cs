@@ -4,78 +4,66 @@ using System.Diagnostics;
 
 public class HUD : CanvasLayer
 {
-	// Declare member variables here. Examples:
-	// private int a = 2;
-	// private string b = "text";
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		var textureButtonHome = ResourceLoader.Load<Texture>("res://Sprites/menu/MathRPG_menu_option_4.png");
-		var pauseButton = (Button)GetNode("PauseButton");
-		pauseButton.Icon = textureButtonHome;
-		var helpButton = (Button)GetNode("HelpButton");
-		helpButton.Connect("pressed", this, "OnHelpButtonPressed");
+		var pauseButton = (TextureButton)GetNode("PauseButton");
+		var animatedSpriteButton = (AnimatedSprite)pauseButton.GetNode("AnimatedSprite");
+		var helpButton = (TextureButton)GetNode("HelpButton");
 		HideButtonsLabels(true);
 	}
 
-	//  // Called every frame. 'delta' is the elapsed time since the previous frame.
-	//  public override void _Process(float delta)
-	//  {
-	//      
-	//  }
 	private void OnPauseButtonPressed()
 	{
-		var pauseButton = (Button)GetNode("PauseButton");
-		var helpButton = (Button)GetNode("HelpButton");
+		var pauseButton = (TextureButton)GetNode("PauseButton");
+		var animatedSpriteButton = (AnimatedSprite)pauseButton.GetNode("AnimatedSprite");
 		if (GetTree().Paused)
 		{
 			GetTree().Paused = false;
-			var textureButtonContinue = ResourceLoader.Load<Texture>("res://Sprites/menu/MathRPG_menu_option_1.png");
-			pauseButton.Icon = textureButtonContinue;
+			animatedSpriteButton.Animation = "continue";
+			animatedSpriteButton.Play();
 			HideButtonsLabels(true);
 		}
 		else
 		{
 			GetTree().Paused = true;
-			var textureButtonHome = ResourceLoader.Load<Texture>("res://Sprites/menu/MathRPG_menu_option_4.png");
-			pauseButton.Icon = textureButtonHome;
+			animatedSpriteButton.Animation = "pause";
+			animatedSpriteButton.Play();
 			HideButtonsLabels(false);
 		}
 	}
 
-	public void HideButtonsLabels(bool toHide)
+	private void HideButtonsLabels(bool toHide)
 	{
-		var helpButton = (Button)GetNode("HelpButton");
+		var helpButton = (TextureButton)GetNode("HelpButton");
 		var pauseLabel = (Label)GetNode("PauseLabel");
 		var colorRect = (ColorRect)GetNode("ColorRect");
+		var exitButton = (TextureButton)GetNode("ExitButton");
 		if (toHide)
 		{
 			helpButton.Hide();
 			pauseLabel.Hide();
 			colorRect.Hide();
-
+			exitButton.Hide();
 		}
 		else
 		{
 			helpButton.Show();
 			pauseLabel.Show();
 			colorRect.Show();
+			exitButton.Show();
 		}
 	}
 
 	private void OnHelpButtonPressed()
 	{
-		string path = ProjectSettings.GlobalizePath("res://Help/") + "/test.chm";
+		string executableDirectory = AppDomain.CurrentDomain.BaseDirectory;
+		string path = executableDirectory + "/test.chm";
 		Process.Start(path);
 	}
+
+	private void OnExitButtonPressed()
+	{
+		GetTree().Quit();
+	}
 }
-
-
-
-
-
-
-
-
-
