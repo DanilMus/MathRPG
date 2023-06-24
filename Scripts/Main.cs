@@ -56,15 +56,11 @@ namespace MathRPG
         // Здесь обработка полученных нажатий
         public override void _Input(InputEvent @event)
         {
-            if (@event is InputEventMouseButton && @event.IsPressed())
+            if (player.IsAlive && @event is InputEventMouseButton && @event.IsPressed())
             {
                 CleanMoveArea();
                 var mousePosition = GetGlobalMousePosition();
                 SetPath(mousePosition, player);
-            }
-            else if (@event is InputEventScreenTouch && @event.IsPressed())
-            {
-                // тут надо будет прописать для телефона
             }
         }
         
@@ -73,12 +69,20 @@ namespace MathRPG
         // Отработка сигналов
         public void OnPlayerMovementDone() // Вызывается, когда игрок закончил движение
         {
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
+            if (player.IsAlive)
+                DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
+            else
+                CleanMoveArea();
         }
         public void OnEntityMovementDone()
         {
-            LoadEnitiesPositions();
-            DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
+            if (player.IsAlive)
+            {
+                LoadEnitiesPositions();
+                DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
+            }
+            else 
+                CleanMoveArea();
         }
 
 

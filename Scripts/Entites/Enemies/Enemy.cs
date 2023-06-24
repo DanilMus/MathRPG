@@ -126,14 +126,32 @@ namespace MathRPG.Entities.Enemies
         {
             if (body is Player)
             {
-                GD.Print("kill");
+                SetPhysicsProcess(false);
                 AnimatedSprite.Play("kills");
+
+                Timer timer = new Timer();
+                timer.WaitTime = 2.0f; timer.OneShot = true;
+                AddChild(timer);
+                timer.Connect("timeout", this, nameof(ReturnPhysicsProcess));
+                timer.Start();
+
+                IsInjured = true;
+                if (!body.IsAlive)
+                {
+                    IsKilled = true;
+                    GD.Print("Killed");
+                }
             }
         }
         public void OnEnemyMovementDone() // Когда завершает ход
         {
             Education();
         }
+        public void ReturnPhysicsProcess()
+        {
+            SetPhysicsProcess(true);
+        }
+
 
 
         // Дальше идет ИИ и функции для его работы
@@ -188,13 +206,25 @@ namespace MathRPG.Entities.Enemies
             double score = 0;
             
             if (IsKilled)
+            {
                 score += 0.5;
+                IsKilled = false;
+            }
             if (IsHurt)
+            {
                 score += 0.5;
+                IsHurt = false;
+            }
             if (IsDead)
+            {
                 score -= 0.5;
-            if (IsDead)
+                IsDead = false;
+            }
+            if (IsInjured)
+            {
                 score -= 0.5;
+                IsInjured = false;
+            }
             
             double[,] loss = {{score * Math.Log(_move.x), score * Math.Log(_move.y)}};
 

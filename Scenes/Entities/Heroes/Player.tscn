@@ -29,12 +29,12 @@ height = 12.0
 [sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 14 ), ExtResource( 21 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 20 ), ExtResource( 19 ) ],
-"loop": true,
+"loop": false,
 "name": "stay",
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 12 ), ExtResource( 13 ), ExtResource( 9 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 7 ), ExtResource( 1 ) ],
-"loop": true,
+"loop": false,
 "name": "walk",
 "speed": 10.0
 } ]
@@ -54,5 +54,7 @@ shape = SubResource( 1 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
 animation = "stay"
-frame = 6
+frame = 7
 playing = true
+
+[connection signal="body_entered" from="Area2D" to="." method="Injured"]

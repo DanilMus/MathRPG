@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using Godot;
 
+using MathRPG.Entities.Enemies;
+
 namespace MathRPG.Entities
 {
     public abstract class Entity: KinematicBody2D
@@ -15,6 +17,7 @@ namespace MathRPG.Entities
         private int _moveRadius;
         File _memory;
         string _memoryPath;
+        int _damage;
 
 
         // Его сигналы
@@ -56,12 +59,7 @@ namespace MathRPG.Entities
         public int Health
         {
             get => _health;
-            set 
-            {
-                if (value < 0) throw new ArgumentException("Health value should be more than zero");
-
-                _health = value; 
-            }
+            set => _health = value; 
         }
         public  int MoveRadius
         {
@@ -93,6 +91,12 @@ namespace MathRPG.Entities
                 _memoryPath = value;
             }
         }
+        protected int Damage
+        {
+            get => _damage;
+            set => _damage = value;
+        }
+        public bool IsAlive { get; private set; }
 
 
 
@@ -101,19 +105,45 @@ namespace MathRPG.Entities
         {
             Speed = 100;
             MoveRadius = 3;
+            Damage = 100;
+            Health = 100;
+            IsAlive = true;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             Path = new List<Vector2>();
             Memory = new File();
         }
 
 
+        // Обработка сигналов
+        public void Injured(Entity body)
+        {
+            if (body is Enemy)
+            {
+                Health -= body.Damage;
+                if (Health < 1)
+                    Death();
+            }
+        }
+
+
+        public void Death()
+        {
+            IsAlive = false;
+            Hide();
+            // Отключение столкновения игрока может привести к
+            // ошибке, поэтому мы используем SetDegerred. Он говорит Годот ждать
+            // отключения, пока не будет безопасно.
+            GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
+            SetPhysicsProcess(false);
+        }
+
 
         // Обработка действий в данный момент
         public override void _PhysicsProcess(float delta)
         {
-            if (!(Path.Count == 0 || (AnimatedSprite.Playing == true && AnimatedSprite.Animation == "kill")))
+            if (Path.Count != 0)
                 Move(delta);
-            else if (AnimatedSprite.Playing != true || AnimatedSprite.Animation == "walk")
+            else 
                 AnimatedSprite.Play("stay");
         }
 

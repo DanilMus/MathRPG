@@ -110,6 +110,7 @@ position = Vector2( 208, 178 )
 position = Vector2( 207, 207 )
 
 [node name="TimerForMove" type="Timer" parent="."]
+wait_time = 3.0
 autostart = true
 
 [node name="Cutscenes" type="AnimationPlayer" parent="."]
