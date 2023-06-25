@@ -7,7 +7,7 @@
 
         public NaturalNumber()
         {
-            _value = Utilities.Random.RandomPositiveInt(RandomMax); // Generate a value in range of (0; RandomMax)
+            _value = Utilities.Random.RandomPositiveInt(RandomMax); // Generates a value in range of (0; RandomMax)
         }
         
         public override string ToString()

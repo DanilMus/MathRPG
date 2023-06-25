@@ -32,7 +32,7 @@ public class Fighting : Node2D
         _xOffset = GetViewportRect().Size.x / 10;
         _yOffset = GetViewportRect().Size.y / 25;
         
-        _startPosition = new Vector2(_xOffset, (GetViewportRect().Size.y - GetViewportRect().Size.y / 3) - _yOffset * 3); // From here we start placing NumberNode objects
+        _startPosition = new Vector2(_xOffset, (GetViewportRect().Size.y - GetViewportRect().Size.y / 3) - _yOffset * 3); // From this position we start placing NumberNode objects
     }
 
     private void MakeGui()
@@ -57,9 +57,7 @@ public class Fighting : Node2D
         _button.RectPosition = new Vector2(GetViewportRect().Size.x / 2 - _button.RectSize.x / 2,
             numberNode.RectPosition.y + _yOffset * 3);
         _button.Connect("pressed", this, "_on_button_pressed");
-        // _button.Icon = (Texture) ResourceLoader.Load("res://Sprites/Attack/MathRPG_attack_block.png");
-        // _button.Flat = true;
-        
+
         AddChild(_button);
     }
 
@@ -67,13 +65,13 @@ public class Fighting : Node2D
     {
         List<NumberNode> rightAnswer = CollectRightAnswers();
         List<NumberNode> answer = CollectAnswers();
-
+        
         List<NumberNode> result = new List<NumberNode>();
         foreach (NumberNode node in answer)
         {
             if (rightAnswer.Contains(node)) result.Add(node);
         }
-
+        
         EmitSignal("OnAnswer", (float) result.Count / rightAnswer.Count); // Returns attack multiplier.
     }
 
@@ -143,13 +141,13 @@ public class Fighting : Node2D
         question.RectPosition = new Vector2(GetViewportRect().Size.x / 2 - question.RectSize.x / 2,
             _startPosition.y - question.RectSize.y);
         
-        question.Label.Text = NumericSet.Strings[ (int) _set];
+        question.Label.Text = NumericSet.Strings[ (int) _set].ToUpper();
         question.Label.Modulate = Colors.Black;
     }
 
     private void PlaceObject(NumberNode obj, int number)
     {
-        NumberNode previousNode = null;
+        NumberNode previousNode;
         
         switch (number)
         {

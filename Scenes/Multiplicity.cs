@@ -22,5 +22,9 @@ public class Multiplicity : Control
     {
         RectSize = _sprite.Texture.GetSize();
         Label.RectSize = RectSize;
+        
+        // It does not appear in the center of it's parent without these settings. It is either because the font is shit or font size is really small
+        Label.MarginLeft = 1f;
+        Label.MarginTop = 1f;
     }
 }

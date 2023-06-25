@@ -9,8 +9,9 @@ namespace MathRPG.Scripts.Logic.Sets
 
         public static string[] _specialValues =
         {
-            "π",
-            "e"
+            // It can not display Pi symbol lol
+            "3,1415...",
+            "e" 
         };
         
         private string _value;
@@ -27,40 +28,23 @@ namespace MathRPG.Scripts.Logic.Sets
         {
             StringBuilder stringBuilder = new StringBuilder();
             
-            int integerPart = Utilities.Random.RandomInt(RandomMax) + 1;
-            int fractionalPartLength = Math.Abs(Utilities.Random.RandomInt(RandomMax / 20) + 1);
+            int integerPart = Utilities.Random.RandomInt(RandomMax);
+            int fractionalPartLength = integerPart < 0 ? 3 : 4;
 
             stringBuilder.Append(integerPart.ToString());
             stringBuilder.Append(".");
             for (int i = 0; i < fractionalPartLength; i++)
             {
-                stringBuilder.Append(Utilities.Random.RandomInt(0, 10));
+                stringBuilder.Append(Utilities.Random.RandomInt(1, 10));
             }
 
-            stringBuilder = new StringBuilder(DeleteZeros(stringBuilder.ToString()));
+            stringBuilder = new StringBuilder(stringBuilder.ToString());
 
             stringBuilder.Append("...");
 
             return stringBuilder.ToString();
         }
 
-        private string DeleteZeros(string value)
-        {
-            StringBuilder stringBuilder = new StringBuilder(value);
-
-            int zeroCount = 0;
-            char[] array = stringBuilder.ToString().ToCharArray();
-            for (int i = stringBuilder.ToString().Length - 1; ; i--)
-            {
-                if (array[i] == '0') zeroCount++;
-                else break;
-            }
-
-            stringBuilder.Remove(stringBuilder.ToString().Length - zeroCount, zeroCount);
-
-            return stringBuilder.ToString();
-        }
-        
         public override string ToString()
         {
             return _value;

@@ -15,12 +15,12 @@ namespace MathRPG.Scripts.Logic.Sets
         {
             while (!CheckValue())
             {
-                _numerator = Utilities.Random.RandomInt(RandomMax); // Generate a value in range of (-RandomMax; RandomMax)
+                _numerator = Utilities.Random.RandomInt(RandomMax); // Generates a value in range of (-RandomMax; RandomMax)
                 _denominator = Math.Abs(Utilities.Random.RandomInt(RandomMax));
             }
         }
         
-        private bool CheckValue() // return false if the value is wrong
+        private bool CheckValue() // returns false if the value is wrong
         {
             if (_denominator == 0) return false;
             if (_numerator == 0) return false;
