@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Scripts/Main.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Heroes/Player.tscn" type="PackedScene" id=2]
@@ -7,6 +7,9 @@
 [ext_resource path="res://Sprites/cells/MathRPG_block (1).png" type="Texture" id=5]
 [ext_resource path="res://Sprites/cells/MathRPG_block (2).png" type="Texture" id=6]
 [ext_resource path="res://Scenes/Path/PathCell.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Scenes/Heath/HealthBar.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Scenes/Heath/BigPotion.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Scenes/Heath/SmallPotion.tscn" type="PackedScene" id=10]
 
 [sub_resource type="TileSet" id=1]
 0/name = "MathRPG_cell.png 0"
@@ -68,14 +71,6 @@
 2/shapes = [  ]
 2/z_index = 0
 
-[sub_resource type="Animation" id=3]
-resource_name = "scene1"
-length = 5.0
-
-[sub_resource type="Animation" id=4]
-resource_name = "scene2"
-length = 5.0
-
 [node name="Main" type="Node2D"]
 script = ExtResource( 1 )
 pathCellScene = ExtResource( 7 )
@@ -95,15 +90,32 @@ tile_data = PoolIntArray( 0, 0, 0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, 0, 0, 
 [node name="Player" parent="." instance=ExtResource( 2 )]
 position = Vector2( 114, 178 )
 
+[node name="CanvasLayer" type="CanvasLayer" parent="Player"]
+
+[node name="HealthBar" parent="Player/CanvasLayer" instance=ExtResource( 8 )]
+margin_left = 12.0
+margin_top = 346.0
+margin_right = 137.0
+margin_bottom = 370.0
+rect_scale = Vector2( 1.66695, 1.90118 )
+
+[node name="BigPotion" parent="Player/CanvasLayer" instance=ExtResource( 9 )]
+margin_left = 192.0
+margin_top = 32.0
+margin_right = 188.0
+margin_bottom = -132.0
+rect_scale = Vector2( 0.145, 0.145 )
+
+[node name="SmallPotion" parent="Player/CanvasLayer" instance=ExtResource( 10 )]
+margin_left = 192.0
+margin_top = 64.0
+margin_right = 188.0
+margin_bottom = -100.0
+rect_scale = Vector2( 0.145, 0.145 )
+
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )
 current = true
 smoothing_enabled = true
 
-[node name="Entities" type="Node2D" parent="."]
-
-[node name="Cutscenes" type="AnimationPlayer" parent="."]
-anims/scene1 = SubResource( 3 )
-anims/scene2 = SubResource( 4 )
-
-[connection signal="MovementDone" from="Player" to="." method="OnPlayerMovementDone"]
+[node name="CutScene" type="AnimationPlayer" parent="."]

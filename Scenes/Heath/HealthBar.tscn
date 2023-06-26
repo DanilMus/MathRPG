@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Sprites/HealthLine/outerPart.png" type="Texture" id=1]
+[ext_resource path="res://Sprites/HealthLine/innerPart.png" type="Texture" id=2]
+[ext_resource path="res://Scripts/Health/HealthBar.cs" type="Script" id=3]
+
+[node name="HealthBar" type="TextureProgress"]
+margin_left = -167.0
+margin_top = -47.0
+margin_right = -47.0
+margin_bottom = -22.0
+rect_scale = Vector2( 20, 20 )
+value = 50.0
+texture_under = ExtResource( 2 )
+texture_progress = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="HealthLabel" type="Label" parent="."]
+modulate = Color( 0, 0, 0, 1 )
+margin_left = 37.15
+margin_top = 8.85
+margin_right = 135.15
+margin_bottom = 36.85
+rect_scale = Vector2( 0.470216, 0.479099 )
+input_pass_on_modal_close_click = false
+text = "100/100"
+align = 1

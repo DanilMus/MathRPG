@@ -127,6 +127,7 @@ namespace MathRPG.Entities.Enemies
             if (body is Player)
             {
                 SetPhysicsProcess(false);
+                AnimatedSprite.FlipH = Position.x - body.Position.x > 2;
                 AnimatedSprite.Play("kills");
 
                 Timer timer = new Timer();

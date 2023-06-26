@@ -66,12 +66,19 @@ namespace MathRPG.Path
 
         public List<Vector2> GetMovePathInRadius(Vector2 from, Vector2 to, int radius, List<Vector2> entities)
         {
-            var areaInRadius = GetAreaInRadius(from, radius, entities);
-            var nextCell = GetClosestPositionFromList(to, areaInRadius);
+            try
+            {
+                var areaInRadius = GetAreaInRadius(from, radius, entities);
+                var nextCell = GetClosestPositionFromList(to, areaInRadius);
 
-            var path = GetMovePath(from, nextCell);
+                var path = GetMovePath(from, nextCell);
 
-            return path;
+                return path;
+            }
+            catch 
+            {
+                return new List<Vector2> {from};
+            }
         }
 
         // Получаем массив клеток в определенном радиусе

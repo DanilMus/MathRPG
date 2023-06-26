@@ -23,6 +23,8 @@ namespace MathRPG.Entities
         // Его сигналы
         [Signal]
         public delegate void MovementDone();
+        [Signal]
+        public delegate void WasAttacked();
 
 
         // Свойства
@@ -59,7 +61,13 @@ namespace MathRPG.Entities
         public int Health
         {
             get => _health;
-            set => _health = value; 
+            set
+            { 
+                if (value < 0)
+                    _health = 0;
+                else
+                    _health = value;
+            } 
         }
         public  int MoveRadius
         {
@@ -91,7 +99,7 @@ namespace MathRPG.Entities
                 _memoryPath = value;
             }
         }
-        protected int Damage
+        public int Damage
         {
             get => _damage;
             set => _damage = value;
@@ -105,7 +113,7 @@ namespace MathRPG.Entities
         {
             Speed = 100;
             MoveRadius = 3;
-            Damage = 100;
+            Damage = 50;
             Health = 100;
             IsAlive = true;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
@@ -115,17 +123,6 @@ namespace MathRPG.Entities
 
 
         // Обработка сигналов
-        public void Injured(Entity body)
-        {
-            if (body is Enemy)
-            {
-                Health -= body.Damage;
-                if (Health < 1)
-                    Death();
-            }
-        }
-
-
         public void Death()
         {
             IsAlive = false;

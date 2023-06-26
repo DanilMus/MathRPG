@@ -2,6 +2,7 @@ using Godot;
 using System.Collections.Generic;
 
 using MathRPG.Path;
+using MathRPG.Health;
 using MathRPG.Entities;
 using MathRPG.Entities.Heroes;
 
@@ -29,6 +30,9 @@ namespace MathRPG
                 int cutsceneNum = 0; // Номер текущей катсцены
                 string[] cutscenesNames; // Хранение названий катсцен
 
+            // Работа со здоровьем
+                protected HealthBar healthBar;
+
         
 
         // Здесь происходит загрузка
@@ -45,10 +49,15 @@ namespace MathRPG
             player = GetNode<Player>("Player");
             player.Position = pathFinder.GetClosestPosition(player.Position); // Прикрепление позиции игрока к сетке
             DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions)); // Рисуем пути
+            player.Connect("WasAttacked", this, nameof(OnPlayerWasAttacked));
 
             // Подключение катсцен
             cutscenes = GetNode<AnimationPlayer>("Cutscenes");
             cutscenesNames = cutscenes.GetAnimationList();
+
+            // Подключение здоровья и все связонного с ним
+            healthBar = player.GetNode<CanvasLayer>("CanvasLayer").GetChild<HealthBar>(0);
+            healthBar.UpdateHealthBar(player.Health, player.Health);
         }
 
 
@@ -73,6 +82,12 @@ namespace MathRPG
                 DrawMoveArea(pathFinder.GetAreaInRadius(player.Position , player.MoveRadius, entitiesPositions));
             else
                 CleanMoveArea();
+        }
+        public void OnPlayerWasAttacked()
+        {
+            GD.Print("was attacked");
+            GD.Print(player.Health);
+            healthBar.UpdateHealthBar(player.Health);
         }
         public void OnEntityMovementDone()
         {
