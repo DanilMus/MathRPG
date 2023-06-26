@@ -84,11 +84,6 @@ namespace MathRPG.Scripts.Attack
                 if ( (int) node.Number.GetSet() <= (int) _set) rightAnswers.Add(node);
             }
 
-            foreach (NumberNode node in rightAnswers)
-            {
-                GD.Print(node.Number);
-            }
-        
             return rightAnswers;
         }
 
@@ -106,7 +101,7 @@ namespace MathRPG.Scripts.Attack
 
         private void LoadAnswers()
         {
-            PackedScene gridObject = (PackedScene) ResourceLoader.Load("res://Scenes/Number.tscn");
+            PackedScene gridObject = (PackedScene) ResourceLoader.Load("res://Scenes/Attack/Number.tscn");
 
             for (int i = 0; i < _numbers.Count; i++)
             {
@@ -138,7 +133,7 @@ namespace MathRPG.Scripts.Attack
 
         private void LoadQuestion()
         {
-            PackedScene multiplicity = (PackedScene) ResourceLoader.Load("res://Scenes/Multiplicity.tscn");
+            PackedScene multiplicity = (PackedScene) ResourceLoader.Load("res://Scenes/Attack/Multiplicity.tscn");
             Multiplicity question = multiplicity.Instance() as Multiplicity;
 
             AddChild(question);
