@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://Scripts/LVLs/TestEnemy.cs" type="Script" id=1]
 [ext_resource path="res://Scenes/Entities/Heroes/Player.tscn" type="PackedScene" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://Scenes/Heath/SmallPotion.tscn" type="PackedScene" id=9]
 [ext_resource path="res://Scenes/Heath/BigPotion.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Scenes/Heath/HealthBar.tscn" type="PackedScene" id=11]
+[ext_resource path="res://Scenes/Menu/Menu.tscn" type="PackedScene" id=12]
 
 [sub_resource type="TileSet" id=1]
 0/name = "MathRPG_cell.png 0"
@@ -121,6 +122,8 @@ margin_top = 64.0
 margin_right = 188.0
 margin_bottom = -100.0
 rect_scale = Vector2( 0.145, 0.145 )
+
+[node name="Menu" parent="Player" instance=ExtResource( 12 )]
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 offset = Vector2( 0, 16 )

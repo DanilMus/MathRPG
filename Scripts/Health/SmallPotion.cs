@@ -26,8 +26,6 @@ namespace MathRPG.Health
             ((Label)GetNode("Label")).Text=potionsCount.ToString(); //Получаем актуальную информацию о количестве зелий
             //Подключаем сигналы, чтобы при нажатии на кнопку вызывались функции _on_SmallPotionButton_pressed в узлах Player,Main,SmallPotion
             this.Connect("pressed", this, "_on_SmallPotionButton_pressed");
-            this.Connect("pressed", GetParent().GetParent().GetParent(), "_on_SmallPotionButton_pressed");
-            this.Connect("pressedWithHealCount",GetParent().GetParent(),"_on_SmallPotionButton_pressed");
         }
 
 
@@ -38,10 +36,9 @@ namespace MathRPG.Health
                 potionsCount-=1;
                 ((Label)GetNode("Label")).Text=potionsCount.ToString();
                 EmitSignal("pressedWithHealCount",healFromPotion); //Излучаем сигнал для выполнения _on_SmallPotionButton_pressed в узле Player
+
                 if(potionsCount==0)  // Делаем картинку зелья прозрачной, если больше нет зелий
-                {
                     ((TextureRect)GetNode("TextureRect")).Modulate=new Color(1,1,1,(float)0.5);
-                }
             }
         }
 

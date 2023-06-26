@@ -1,0 +1,75 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Scripts/Menu/Menu.cs" type="Script" id=1]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_option_5.png" type="Texture" id=2]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/1.png" type="Texture" id=3]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/3.png" type="Texture" id=5]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/2.png" type="Texture" id=6]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/9.png" type="Texture" id=7]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/4.png" type="Texture" id=8]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/5.png" type="Texture" id=9]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/8.png" type="Texture" id=10]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/7.png" type="Texture" id=11]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/6.png" type="Texture" id=12]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_button.png/0.png" type="Texture" id=13]
+[ext_resource path="res://Sprites/menu/MathRPG_menu_option_6.png" type="Texture" id=14]
+
+[sub_resource type="SpriteFrames" id=2]
+animations = [ {
+"frames": [ ExtResource( 9 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 10 ), ExtResource( 7 ), ExtResource( 13 ) ],
+"loop": false,
+"name": "continue",
+"speed": 24.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 5 ), ExtResource( 8 ), ExtResource( 9 ) ],
+"loop": false,
+"name": "pause",
+"speed": 10.0
+} ]
+
+[node name="Menu" type="CanvasLayer"]
+pause_mode = 2
+script = ExtResource( 1 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+pause_mode = 2
+margin_right = 224.0
+margin_bottom = 384.0
+color = Color( 0.137255, 0.137255, 0.152941, 0.576471 )
+
+[node name="PauseButton" type="TextureButton" parent="."]
+pause_mode = 2
+margin_left = 192.0
+margin_right = 224.0
+margin_bottom = 32.0
+expand = true
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="PauseButton"]
+pause_mode = 2
+position = Vector2( 16, 16 )
+frames = SubResource( 2 )
+animation = "pause"
+
+[node name="HelpButton" type="TextureButton" parent="."]
+pause_mode = 2
+margin_left = 56.0
+margin_top = 144.0
+margin_right = 168.0
+margin_bottom = 192.0
+texture_normal = ExtResource( 14 )
+texture_hover = ExtResource( 14 )
+expand = true
+
+[node name="ExitButton" type="TextureButton" parent="."]
+pause_mode = 2
+margin_left = 56.0
+margin_top = 224.0
+margin_right = 168.0
+margin_bottom = 272.0
+texture_normal = ExtResource( 2 )
+texture_hover = ExtResource( 2 )
+expand = true
+
+[connection signal="pressed" from="PauseButton" to="." method="OnPauseButtonPressed"]
+[connection signal="pressed" from="HelpButton" to="." method="OnHelpButtonPressed"]
+[connection signal="pressed" from="ExitButton" to="." method="OnExitButtonPressed"]

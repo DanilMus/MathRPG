@@ -65,9 +65,15 @@ namespace MathRPG.Entities
             { 
                 if (value < 0)
                     _health = 0;
+                else if (value > FullHeath)
+                    _health = value;
                 else
                     _health = value;
             } 
+        }
+        public int FullHeath
+        {
+            get; private set;
         }
         public  int MoveRadius
         {
@@ -114,7 +120,8 @@ namespace MathRPG.Entities
             Speed = 100;
             MoveRadius = 3;
             Damage = 50;
-            Health = 100;
+            FullHeath = 100;
+            Health = FullHeath;
             IsAlive = true;
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
             Path = new List<Vector2>();
