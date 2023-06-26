@@ -6,7 +6,7 @@
         
         public IntegerNumber()
         {
-            _value = Utilities.Random.RandomInt(RandomMax); // Generates a number in range of (-RandomMax; RandomMax)
+            _value = Utilities.Random.RandomNegativeInt(RandomMax); // Generates a number in range of (-RandomMax; 1)
         }
         
         public override NumericSet.Values GetSet()
