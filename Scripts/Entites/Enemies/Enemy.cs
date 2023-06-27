@@ -32,6 +32,10 @@ namespace MathRPG.Entities.Enemies
         double[,] _layer0, _layer1, _layer2;
 
 
+        // Сигналы
+        [Signal]
+        public delegate void EnemyPressed(Enemy enemy);
+
 
         // Свойства у врага
         protected int ViewRadius
@@ -151,6 +155,11 @@ namespace MathRPG.Entities.Enemies
         public void ReturnPhysicsProcess()
         {
             SetPhysicsProcess(true);
+        }
+        public void OnEnemyMouseEntered()
+        {
+            GD.Print("ok");
+            EmitSignal(nameof(EnemyPressed), this);
         }
 
 

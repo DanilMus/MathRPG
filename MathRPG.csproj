@@ -2,4 +2,9 @@
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Utilities">
+      <HintPath>Scripts\Attack\Logic\Utilities.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

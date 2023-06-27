@@ -5,7 +5,9 @@ using MathRPG.Path;
 using MathRPG.Health;
 using MathRPG.Entities;
 using MathRPG.Entities.Heroes;
+using MathRPG.Entities.Enemies;
 using MathRPG.MenuHUD;
+using MathRPG.Attack;
 
 namespace MathRPG
 {
@@ -31,6 +33,9 @@ namespace MathRPG
                 int cutsceneNum = 0; // Номер текущей катсцены
                 string[] cutscenesNames; // Хранение названий катсцен
 
+            // Работа с врагами
+                protected List<Enemy> enemies = new List<Enemy>();
+
             // Работа со здоровьем
                 protected HealthBar healthBar;
                 protected SmallPotion smallPotion;
@@ -38,6 +43,11 @@ namespace MathRPG
 
             // Меню 
                 public Menu menu;
+
+            // Сцена боя
+                public Fighting fighting;
+                [Export]
+                public PackedScene fightingScene;
 
         
 
@@ -61,6 +71,16 @@ namespace MathRPG
             cutscenes = GetNode<AnimationPlayer>("Cutscenes");
             cutscenesNames = cutscenes.GetAnimationList();
 
+            // Подключение врагов
+            var _enemies = GetNode<Node2D>("Enemies");
+            foreach (Entity entity in _enemies.GetChildren())
+            {
+                entities.Add(entity);
+                enemies.Add((Enemy)entity);
+            }
+            PrepareEntities();
+            
+
             // Подключение здоровья и все связонного с ним
             healthBar = player.GetNode<CanvasLayer>("CanvasLayer").GetChild<HealthBar>(0);
             healthBar.UpdateHealthBar(player.Health, player.FullHeath);
@@ -71,7 +91,7 @@ namespace MathRPG
             smallPotion.Connect("pressedWithHealCount", this, nameof(OnPotionButtonPressed));
 
             // Подключение menu
-            menu = GetNode<Menu>("Menu");
+            menu = player.GetNode<Menu>("Menu");
         }
 
 
@@ -119,7 +139,19 @@ namespace MathRPG
             player.Health += heal;
             healthBar.UpdateHealthBar(player.Health, player.FullHeath);
         }
+        public void OnTimerForMoveTimeout() // Высчитвает время, чтобы враг сходил
+        {
+            foreach (NumEnemy enemy in enemies)
+            {
+                // Враг делает свой ход
+                Vector2 move = enemy.Thinking(player.Position);
+                SetPath(move, enemy);
+            }
+        }
+        public void OnEnemyInputEvent()
+        {
 
+        }
 
         // Прочие функции
         public void SetPath(Vector2 whereGo, Entity whoGo)
@@ -192,6 +224,11 @@ namespace MathRPG
                 entitiesPositions.Add(entity.Position);
                 entity.Connect("MovementDone", this, nameof(OnEntityMovementDone));
             }    
+        }
+        protected void PrepareEnemies()
+        {
+            // foreach (Enemy entity in entities)
+            //     entity.Connect("InputEvent", this, nameof)
         }
     }
 }

@@ -2,10 +2,17 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
+<<<<<<< HEAD
 /projectSettingsUpdater.xml
 /.idea.MathRPG.iml
 /contentModel.xml
 /modules.xml
+=======
+/.idea.MathRPG.iml
+/contentModel.xml
+/modules.xml
+/projectSettingsUpdater.xml
+>>>>>>> feature/attack
 # Editor-based HTTP Client requests
 /httpRequests/
 # Datasource local storage ignored files
