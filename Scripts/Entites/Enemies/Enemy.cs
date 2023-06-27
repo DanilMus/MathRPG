@@ -124,6 +124,18 @@ namespace MathRPG.Entities.Enemies
         }
 
 
+        public override void _Input(InputEvent @event)
+        {
+            if (@event is InputEventMouseButton && @event.IsPressed())
+            {
+                var mousePosition = GetGlobalMousePosition();
+                if (Position.DistanceTo(mousePosition) <= 16)
+                {
+                    EmitSignal(nameof(EnemyPressed), this);
+                }
+            }
+        }
+
 
         // Обработка сигналов
         public void Killing(Entity body)
@@ -142,10 +154,7 @@ namespace MathRPG.Entities.Enemies
 
                 IsInjured = true;
                 if (!body.IsAlive)
-                {
                     IsKilled = true;
-                    GD.Print("Killed");
-                }
             }
         }
         public void OnEnemyMovementDone() // Когда завершает ход

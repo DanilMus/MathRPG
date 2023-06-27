@@ -65,8 +65,11 @@ namespace MathRPG.Entities
             get => _health;
             set
             { 
-                if (value < 0)
+                if (value <= 0)
+                {
                     _health = 0;
+                    Death();
+                }
                 else if (value > FullHeath)
                     _health = value;
                 else

@@ -7,6 +7,7 @@ namespace MathRPG.Entities.Heroes
 		{
 			InitializeVariables();
 			MoveRadius = 4;
+			Damage = 100;
 		}
 	}
 }

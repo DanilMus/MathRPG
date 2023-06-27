@@ -12,8 +12,6 @@ namespace MathRPG.Entities.Heroes
             {
                 Health -= body.Damage;
                 EmitSignal(nameof(WasAttacked));
-                if (Health == 0)
-                    Death();
             }
         }
     }

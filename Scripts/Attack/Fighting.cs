@@ -59,7 +59,7 @@ namespace MathRPG.Attack
             _button.RectSize = new Vector2(numberNode.RectSize.x, numberNode.RectSize.y / 1.5F);
             _button.Text = "Confirm";
             _button.RectPosition = new Vector2(GetViewportRect().Size.x / 2 - _button.RectSize.x / 2,
-                numberNode.RectPosition.y + _yOffset * 3);
+                numberNode.RectPosition.y + _yOffset * 2);
             _button.Connect("pressed", this, "_on_button_pressed");
 
             AddChild(_button);
@@ -140,7 +140,7 @@ namespace MathRPG.Attack
             AddChild(question);
 
             question.RectPosition = new Vector2(GetViewportRect().Size.x / 2 - question.RectSize.x / 2,
-                _startPosition.y - question.RectSize.y);
+                ((float)(_startPosition.y * 1.15 - question.RectSize.y * 1.15)));
         
             question.Label.Text = NumericSet.Strings[ (int) _set].ToUpper();
             question.Label.Modulate = Colors.Black;

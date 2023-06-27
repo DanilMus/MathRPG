@@ -16,6 +16,7 @@ namespace MathRPG
 		// Здесь подготавливаем переменнные
 			// Навигация по миру
 				protected PathFinder pathFinder; // Класс нахождения пути
+                protected TileMap other;
 
 			// Игрок и все с ним связанное 
 				protected Player player; // Игрок
@@ -48,6 +49,7 @@ namespace MathRPG
 				public Fighting fighting;
 				[Export]
 				public PackedScene fightingScene;
+                protected Enemy attackedEnemy;
 
 		
 
@@ -60,6 +62,7 @@ namespace MathRPG
 		{
 			// Подключение навигации
 			pathFinder = new PathFinder(GetNode<TileMap>("Ground"));
+            other = GetNode<TileMap>("Other");
 
 			// Подключение игрока и всем связанным с ним
 			player = GetNode<Player>("Player");
@@ -80,6 +83,7 @@ namespace MathRPG
 				enemies.Add((Enemy)entity);
 			}
 			PrepareEntities();
+            PrepareEnemies();
 			
 
 			// Подключение здоровья и все связонного с ним
@@ -100,10 +104,10 @@ namespace MathRPG
 		// Здесь обработка полученных нажатий
 		public override void _Input(InputEvent @event)
 		{
-			if (player.IsAlive && @event is InputEventMouseButton && @event.IsPressed())
+			if (player.IsAlive && fighting == null && @event is InputEventMouseButton && @event.IsPressed())
 			{
 				var mousePosition = GetGlobalMousePosition();
-				if (player.Position.DistanceTo(mousePosition) <= player.MoveRadius * 32)
+				if (player.Position.DistanceTo(mousePosition) <= (player.MoveRadius - 1) * 32)
 				{
 					CleanMoveArea();
 					SetPath(mousePosition, player);
@@ -153,10 +157,27 @@ namespace MathRPG
 				SetPath(move, enemy);
 			}
 		}
-		public void OnEnemyInputEvent()
+		public void OnEnemyEnemyPressed(Enemy enemy)
 		{
-
+            if (fighting != null)
+                return;
+            
+            attackedEnemy = enemy;
+            fighting = (Fighting)fightingScene.Instance();
+            GD.Print(fighting.Position);
+            fighting.Position -= new Vector2(16 + 32*3, 16 + 32*5);
+            player.AddChild(fighting);
+            fighting.Connect("OnAnswer", this, nameof(OnFightingOnAnswer));
 		}
+        public void OnFightingOnAnswer(float attackFactor)
+        {
+            attackedEnemy.Health -= ((int)(player.Damage * attackFactor));
+            // GD.Print(attackedEnemy.Health, )
+            attackedEnemy = null;
+            player.RemoveChild(fighting);
+            fighting = null;
+        }
+
 
 		// Прочие функции
 		public void SetPath(Vector2 whereGo, Entity whoGo)
@@ -196,13 +217,13 @@ namespace MathRPG
 				moveArea.AddChild(pathCell);
 			}
 			
-			AddChild(moveArea);
+			other.AddChild(moveArea);
 		}
 		protected void CleanMoveArea()
 		{
 			if (moveArea != null)
 			{
-				RemoveChild(moveArea);
+				other.RemoveChild(moveArea);
 				moveArea.QueueFree();
 				moveArea = null;
 			}
@@ -232,8 +253,8 @@ namespace MathRPG
 		}
 		protected void PrepareEnemies()
 		{
-			// foreach (Enemy entity in entities)
-			//     entity.Connect("InputEvent", this, nameof)
+			foreach (Enemy enemy in enemies)
+			    enemy.Connect("EnemyPressed", this, nameof(OnEnemyEnemyPressed));
 		}
 	}
 }
