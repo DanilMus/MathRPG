@@ -1,6 +1,6 @@
 using Godot;
 
-namespace MathRPG.Scripts.Attack
+namespace MathRPG.Attack
 {
     public class Multiplicity : Control
     {

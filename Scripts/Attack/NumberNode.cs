@@ -1,7 +1,7 @@
 using Godot;
-using MathRPG.Scripts.Logic.Sets;
+using MathRPG.Attack.Logic.Sets;
 
-namespace MathRPG.Scripts.Attack
+namespace MathRPG.Attack
 {
     public class NumberNode : Control
     {

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using MathRPG.Scripts.Logic.Sets;
+using MathRPG.Attack.Logic;
+using MathRPG.Attack.Logic.Sets;
 
-namespace MathRPG.Scripts.Attack
+namespace MathRPG.Attack
 {
     public class Fighting : Node2D
     {

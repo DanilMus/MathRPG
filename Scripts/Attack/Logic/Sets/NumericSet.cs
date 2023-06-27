@@ -1,4 +1,4 @@
-﻿namespace MathRPG.Scripts.Logic.Sets
+﻿namespace MathRPG.Attack.Logic.Sets
 {
     public abstract class NumericSet
     {

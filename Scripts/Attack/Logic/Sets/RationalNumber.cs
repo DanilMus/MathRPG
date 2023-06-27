@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace MathRPG.Scripts.Logic.Sets
+namespace MathRPG.Attack.Logic.Sets
 {
     public class RationalNumber: Number
     {
