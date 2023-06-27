@@ -25,6 +25,8 @@ namespace MathRPG.Entities
         public delegate void MovementDone();
         [Signal]
         public delegate void WasAttacked();
+        [Signal]
+        public delegate void Died();
 
 
         // Свойства
@@ -139,6 +141,7 @@ namespace MathRPG.Entities
             // отключения, пока не будет безопасно.
             GetNode<CollisionShape2D>("CollisionShape2D").SetDeferred("disabled", true);
             SetPhysicsProcess(false);
+            EmitSignal("Died");
         }
 
 
