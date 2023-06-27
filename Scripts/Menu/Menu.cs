@@ -38,20 +38,17 @@ namespace MathRPG.MenuHUD
 		private void HideButtonsLabels(bool toHide)
 		{
 			var helpButton = (TextureButton)GetNode("HelpButton");
-			var pauseLabel = (Label)GetNode("PauseLabel");
 			var colorRect = (ColorRect)GetNode("ColorRect");
 			var exitButton = (TextureButton)GetNode("ExitButton");
 			if (toHide)
 			{
 				helpButton.Hide();
-				pauseLabel.Hide();
 				colorRect.Hide();
 				exitButton.Hide();
 			}
 			else
 			{
 				helpButton.Show();
-				pauseLabel.Show();
 				colorRect.Show();
 				exitButton.Show();
 			}
